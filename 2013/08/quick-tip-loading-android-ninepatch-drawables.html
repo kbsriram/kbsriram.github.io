@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<base href="../../"/>
+<title>Quick tip - loading Android nine-patch drawables</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<link rel="stylesheet" href="media/css/main.css"/>
+</head>
+<body>
+<h1><a href="/">KB Sriram</a></h1>
+
+<div class="date">August 9, 2013</div>
+<h2>Quick tip - loading Android nine-patch drawables</h2>
+<p >Did you need to load a stretchy nine-patch drawable from your assets
+or the network, rather than directly via a resource? If so, you begin
+to realize that the <tt>foo.9.png</tt> file in your source is actually
+different from what's compiled into your apk, and you have to do
+something similar before you can use the goodness of <a
+href="http://developer.android.com/reference/android/graphics/drawable/NinePatchDrawable.html">NinePatchDrawables</a>.</p>
+<p >This <tt>aapt</tt> command converts a single <tt>input.9.png</tt> into
+a version that can be loaded as a NinePatchDrawable</p>
+<pre >aapt singleCrunch -v -i  input.9.png -o compiled_input.9.png</pre>
+<p >To load it within your code, simply use <a
+href="http://developer.android.com/reference/android/graphics/BitmapFactory.html">BitmapFactory</a>
+to create a Bitmap from <tt>compiled_input.9.png</tt>, and then use</p>
+<pre >new NinePatch(mybitmap, mybitmap.getNinePatchChunk(), null)</pre>
+<p >to create a <a
+href="http://developer.android.com/reference/android/graphics/NinePatch.html">NinePatch</a>,
+and then use that within a suitable NinePatchDrawable constructor to
+arrive at a nice, stretchable Drawable.﻿</p>
+<div class="spacer"></div>
+<address class="vcard h-card">
+<img style="height: 2.6em; float: left; margin-right: 0.5em;" class="photo u-photo" alt="KB Sriram" src="kbs.png"/>
+This is the personal site of
+<a href="/" class="url u-url">KB Sriram</a>.<br/>
+I'm also on
+<a href="https://plus.google.com/+KBSriram" rel="me">Google Plus</a> and
+<a href="https://github.com/kbsriram" rel="me">Github</a>.
+</address>
+</body>
+</html>

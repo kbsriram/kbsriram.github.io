@@ -1,0 +1,32 @@
+$date
+2013-08-09
+
+$title
+Quick tip - loading Android nine-patch drawables
+
+Did you need to load a stretchy nine-patch drawable from your assets
+or the network, rather than directly via a resource? If so, you begin
+to realize that the <tt>foo.9.png</tt> file in your source is actually
+different from what's compiled into your apk, and you have to do
+something similar before you can use the goodness of <a
+href="http://developer.android.com/reference/android/graphics/drawable/NinePatchDrawable.html">NinePatchDrawables</a>.
+
+This <tt>aapt</tt> command converts a single <tt>input.9.png</tt> into
+a version that can be loaded as a NinePatchDrawable
+
+$code_begin
+aapt singleCrunch -v -i  input.9.png -o compiled_input.9.png
+$code_end
+
+To load it within your code, simply use <a
+href="http://developer.android.com/reference/android/graphics/BitmapFactory.html">BitmapFactory</a>
+to create a Bitmap from <tt>compiled_input.9.png</tt>, and then use
+
+$code_begin
+new NinePatch(mybitmap, mybitmap.getNinePatchChunk(), null)
+$code_end
+
+to create a <a
+href="http://developer.android.com/reference/android/graphics/NinePatch.html">NinePatch</a>,
+and then use that within a suitable NinePatchDrawable constructor to
+arrive at a nice, stretchable Drawable.﻿

@@ -1,0 +1,23 @@
+$date
+2014-03-13
+
+$title
+Quick tip - git commit id as your Android app's version
+
+Recent versions of the Android build tools have made it very easy to
+dynamically set the <tt>version.name</tt> (or the
+<tt>version.code</tt> I guess) with just ant and the command line.
+
+Remove the <tt>version.name</tt> attribute from your
+<tt>AndroidManifest.xml</tt> file, and add this stanza to a
+<tt>custom_rules.xml</tt> file.
+
+$code_begin
+<exec executable="git" outputproperty="version.name">
+  <arg value="rev-parse"/>
+  <arg value="--short"/>
+  <arg value="HEAD"/>
+</exec>
+$code_end
+
+Edit to taste - that's it.﻿

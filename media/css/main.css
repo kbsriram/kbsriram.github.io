@@ -1,4 +1,4 @@
->/* http://meyerweb.com/eric/tools/css/reset/ 
+/* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
 */
@@ -57,11 +57,17 @@ body {
     margin-bottom: 3.25em;
 }
 
+tt {
+    font-family: monospace;
+    -webkit-font-smoothing: antialiased;
+}
+
 pre {
     font-size: 2.0em;
     line-height: 1.5em;
     margin-bottom: 1.5em;
     text-rendering: optimizelegibility;
+    font-family: monospace;
 	-webkit-font-smoothing: antialiased;
 }
 
@@ -132,6 +138,12 @@ img.full, img.centered, img.half, img.half_cright, img.half_noclear {
     margin-bottom: 1em;
 }
 
+img.lead_initial {
+    float: left;
+    height: 4.5em;
+    margin-right: 0.5em;
+}
+
 address {
     font-size: 1.6em;
     line-height: 1.4em;
@@ -151,6 +163,7 @@ div.date {
 }
 
 div.spacer {
+    clear: both;
     height: 2.2em;
 }
 

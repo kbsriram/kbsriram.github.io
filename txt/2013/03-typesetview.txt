@@ -1,15 +1,21 @@
 $date
-2012-12-12
+2013-09-20
 
 $title
 TypesetView: typesetting niceties for Android
 
+<a href="https://github.com/kbsriram/typesetview"><img
+src="media/img/024e17cb7cbf763cfbe946ac2cb4ba08235fc970.jpg"
+alt="TypesetView screenshot" class="half"/></a>
 <a href="https://github.com/kbsriram/typesetview">TypesetView</a> is a
 View that's great for displaying paragraphs of rag-right, static body
 text in your Android app. It adds typographic niceties from more
 sophisticated text layout engines, allowing refined control over your
 content. Multicolumn text, TeX-style line breaks, margins that flow
 around arbitrary shapes and more.
+
+$asis
+<div class="clear"></div>
 
 <strong>Multi-column text.</strong>
 
@@ -124,8 +130,6 @@ You can programatically control margins by implementing the
 TypesetView.MarginPosition interface. Please look at the provided
 examples for further guidance on using this interface. Good luck and
 make great content!
-
-<img class="centered" src="https://github.com/kbsriram/typesetview/raw/master/docs/goofing_around.jpg" alt="A nice layout"/>
 
 <small>Some images and text used within the examples are from the
 <a href="http://www.ndc.co.jp/en/">Nippon Design Center</a>.</small>

@@ -110,7 +110,7 @@ public class CFeed
     }
 
     private final TreeSet<Entry> m_entries = new TreeSet<Entry>();
-    private final static int ENTRIES_PER_PAGE = 3;
+    private final static int ENTRIES_PER_PAGE = 5;
 
     public final static class Entry
         implements Comparable<Entry>        

@@ -1,0 +1,47 @@
+$date
+2014-03-11
+
+$title
+SaveMyPics - autosave your photos to Snapfish (Android app)
+
+<a
+href="https://play.google.com/store/apps/details?id=org.savemypics.android"><img
+src="media/img/b21b02b3a6c0f1ecd5428898979e4586ede8757b.png"
+class="lead_initial" alt="SaveMyPics icon"></a>
+Autosave your photos to Snapfish with <a
+href="https://play.google.com/store/apps/details?id=org.savemypics.android">this
+simple Android app</a>.  Wakes up when there are new pictures and
+saves them to your <a href="https://www.snapfish.com">Snapfish
+account</a>.
+
+<img src="media/img/d264541a3e3d6706b76b364f7a0543066e31f97a.jpg"
+alt="Save My Pics screenshot" class="half"/>
+Getting pictures off my Nexus 4 into Snapfish has always been a chore,
+and I'm a fan of single-minded automated apps. So I wrote this and
+have been using it over the last few months. Set it up once and forget
+about it pretty much. It's really nice to have the pictures just show
+up in Snapfish without any effort.
+
+$asis
+<div class="clear"></div>
+
+I admit I may be a little biased :-) but if you use Snapfish I think
+you'll like it.
+
+1. Waits to upload (by default) over wifi at full resolution.
+
+2. You'll have a copy of your photos in private Snapfish albums,
+should you ever lose your phone.
+
+3. If you order cards or photobooks from your computer, it's so much
+easier having your phone pictures already on the site.
+
+One more thing. Yep. <a href="https://github.com/kbsriram/savemypics">
+Open-sourced for good measure</a>, love to hear your feedback or
+contribute and extend it on github.
+
+<small>Photographs in the screenshots provided thanks to
+<a href="http://www.publicdomainpictures.net/browse-author.php?a=5584" rel="nofollow">Sylwia Mazurek</a>,
+<a href="http://www.publicdomainpictures.net/browse-author.php?a=1" rel="nofollow">Petr Kratochvil</a>, and
+<a href="http://www.publicdomainpictures.net/browse-author.php?a=87">Vera Kratochvil</a>.
+</small>

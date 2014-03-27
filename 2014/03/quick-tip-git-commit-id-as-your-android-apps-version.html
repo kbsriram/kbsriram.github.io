@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<base href="../../"/>
+<title>Quick tip - git commit id as your Android app's version</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<link rel="stylesheet" href="media/css/main.css"/>
+</head>
+<body>
+<h1><a href="/">KB Sriram</a></h1>
+
+<div class="date">March 13, 2014</div>
+<h2>Quick tip - git commit id as your Android app's version</h2>
+<p >Recent versions of the Android build tools have made it very easy to
+dynamically set the <tt>version.name</tt> (or the
+<tt>version.code</tt> I guess) with just ant and the command line.</p>
+<p >Remove the <tt>version.name</tt> attribute from your
+<tt>AndroidManifest.xml</tt> file, and add this stanza to a
+<tt>custom_rules.xml</tt> file.</p>
+<pre >&#60;exec executable="git" outputproperty="version.name"&#62;
+  &#60;arg value="rev-parse"/&#62;
+  &#60;arg value="--short"/&#62;
+  &#60;arg value="HEAD"/&#62;
+&#60;/exec&#62;</pre>
+<p >Edit to taste - that's it.﻿</p>
+<div class="spacer"></div>
+<address class="vcard h-card">
+<img style="height: 2.6em; float: left; margin-right: 0.5em;" class="photo u-photo" alt="KB Sriram" src="kbs.png"/>
+This is the personal site of
+<a href="/" class="url u-url">KB Sriram</a>.<br/>
+I'm also on
+<a href="https://plus.google.com/+KBSriram" rel="me">Google Plus</a> and
+<a href="https://github.com/kbsriram" rel="me">Github</a>.
+</address>
+</body>
+</html>
