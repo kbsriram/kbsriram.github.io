@@ -1,0 +1,11 @@
+<div class="spacer"></div>
+<address class="vcard h-card">
+<img style="height: 2.6em; float: left; margin-right: 0.5em;" class="photo u-photo" alt="KB Sriram" src="kbs.png"/>
+This is the personal site of
+<a href="/" class="url u-url">KB Sriram</a>.<br/>
+I'm also on
+<a href="https://plus.google.com/+KBSriram" rel="me">Google Plus</a> and
+<a href="https://github.com/kbsriram" rel="me">Github</a>.
+</address>
+</body>
+</html>

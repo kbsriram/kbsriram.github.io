@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<base href="../../"/>
+<title>Inside the Android Play Service's Magic OAuth Flow</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<link rel="stylesheet" href="media/css/main.css"/>
+</head>
+<body>
+<h1><a href="/">KB Sriram</a></h1>
+
+<div class="date">January 22, 2014</div>
+<h2>Inside the Android Play Service's Magic OAuth Flow</h2>
+<p >I was looking into how the Google Play library actually obtains <a
+href="http://android-developers.blogspot.ca/2012/09/google-play-services-and-oauth-identity.html">OAuth
+tokens on behalf of apps</a>, as the actual nuts and bolts remain
+undocumented.  Its implementation offers some interesting insights
+into how Google handles issues that crop up up when using OAuth in an
+Android app. The rest of this post presumes you know a bit about
+Android, OAuth as well as how to <a
+href="https://developer.android.com/google/play-services/setup.html">use
+the Google Play Services library</a> to obtain access tokens. Sorry if
+all this is down in the weeds, but that's where the fun bits are!</p>
+<p >To get a disclaimer out of the way. These are just my observations
+after poking at various dex files and network traffic and I've
+undoubtedly missed many things; but I do hope to show you the broad
+outline of how it works.</p>
+<p >There are three points of interest.</p>
+<p >1. Critical code runs only within a Google signed app (eg: the
+<tt>com.google.android.gms/.auth.GetToken</tt> service.)</p>
+<p >2. This service <strong>approves apps locally</strong>, and obtains
+access tokens using a locally stored master token. It effectively
+replaces the traditional web-based OAuth approval flow.</p>
+<p >3. Third-party apps are identified by their signature and package
+name, rather than an application-key/application-secret.</p>
+<p ><img alt="separation of responsibilities" src="media/img/0768c6cd6c1f7fdeeaf1797210719da1e69d9177.png" class="centered"/></p>
+<p >The green areas run "trusted" code. Your app uses the Google Play
+Services client library; but the library itself doesn't run critical
+code. It instead forwards calls to services and activities running
+within a separately installed app ("Google Play Services".)</p>
+<p >Here are some interesting bits of the manifest file for
+<tt>com.google.android.gms</tt> (the "Google Play services" app) so
+you get a feel for how it is set up.</p>
+<pre >&#60;manifest
+  android:sharedUserId="com.google.uid.shared"
+  package="com.google.android.gms"
+  ...&#62;
+  &#60;service
+    android:name=".auth.GetToken"
+    android:exported="true"
+    android:process="com.google.process.gapps"/&#62;
+
+  &#60;activity
+    android:name=".auth.login.LoginActivity"
+    android:exported="true"
+    android:process="com.google.android.gms.ui"
+    .../&#62;</pre>
+<p >As an app writer, you typically call <a
+href="http://developer.android.com/reference/com/google/android/gms/auth/GoogleAuthUtil.html#getToken(android.content.Context,%20java.lang.String,%20java.lang.String)">GoogleAuthUtil.getToken()</a>
+from your application. The Play Services library first verifies that
+the required Google apps (<tt>com.android.vending</tt> and
+<tt>com.google.android.gms</tt>) are installed, and also that they have an
+acceptable version and signature. The acceptable version numbers and
+signature are embedded directly within the library. Your requested
+OAuth scope is passed to the service, and now we're running inside the
+trusted Play Services app.</p>
+<p >Things start to get interesting within the get-token service.</p>
+<p >This service first retrieves the app package name and signature of the
+caller. This pair <tt>(caller_package_name,caller_signature)</tt> is
+used to identify the caller. This mutual identification/verification
+by the service and the calling library takes place right at the
+outset; and presumably makes it more difficult for either the caller
+or a rogue "Play Service" to spoof their identity to the other.</p>
+<p >The service <strong>directly manages app approval</strong>, shows
+dialogs to the user as needed, and creates access tokens for requested
+scopes. In other words, it <strong>performs the app-approval</strong>
+that would otherwise typically be done by the web-site.</p>
+<p >This approach does have some advantages. By using a locally running
+service in a trusted Google app, Google can take advantage of some of
+the security features within Android.</p>
+<p >For example, by using the package signature to identify your
+application, it eliminates the need to embed application ids and
+secrets in your apk (which can often be extracted out of a downloaded
+application; allowing the bad guys to sign requests as if they came
+from your app.) Package signatures are much harder to spoof - you'll
+need the private signing key which is (hopefully!) never revealed; so
+this is a better way to identify an app.</p>
+<p >Further, all the access approval UI and token acquisition logic is
+sandboxed inside the play app rather than being left to the
+app-writer. Presumably, this reduces the "attack-surface", and also
+allows bugs to be addressed quickly by updating this single app.</p>
+<p >You might now be imagining the flip side of such a powerful Android
+service, and you'd be right. This service has to be secure and
+correctly alert the user during approval; for once provisioned, it is
+capable of creating access tokens on behalf of any app, and with any
+scope.</p>
+<p >The get-token service does all this using what I call a <em>master
+token</em> that it obtains from an undocumented authentication
+endpoint at <tt>https://android.clients.google.com/auth</tt>. Here's
+how it works.</p>
+<p >When you first add an account to the device (say during device setup)
+the service posts your password, which is additionally encrypted with,
+I believe, a public key whose private counterpart is available to the
+web endpoint.</p>
+<pre >POST https://android.clients.google.com/auth
+Parameters
+----------
+accountType:      HOSTED_OR_GOOGLE
+Email:            xxx@gmail.com
+has_permission:   1
+add_account:      1
+EncryptedPasswd:  &#60;some base64 encoding&#62;
+service:          ac2dm
+source:           android
+androidId:        &#60;deviceid&#62;
+device_country:   us
+operatorCountry:  us
+lang:             en
+sdk_version:      17</pre>
+<p >A successful login returns back a bunch of user information and
+tokens, one per line.</p>
+<pre>
+SID=...
+LSID=...
+Auth=...
+services=hist,mail,lh2,talk,oz
+Email=...
+<strong>Token=1/zMASTERTOKEN</strong>
+GooglePlusUpgrade=1
+PicasaUser=...
+RopText=
+RopRevision=1
+firstName=...
+lastName=...
+</pre><p >Note the Token field - this is the one master token to rule them all.</p>
+<p >The master token is stored on the device using the <a
+href="http://developer.android.com/reference/android/accounts/AccountManager.html">AccountManager</a>. You
+should be aware that in most device configurations, AccountManager
+stores this token in an unencrypted sqlite database
+(<tt>accounts.db</tt> - usually somewhere under
+<tt>/data/system</tt>.) Protection is primarily through the basic
+linux file-system access controls - the directories are accessible
+only to system processes.</p>
+<p >My understanding of the Android Security Team's position is that
+anything else is fundamentally security theatre. Encrypting the data
+or the filesystem <a
+href="http://source.android.com/devices/tech/encryption/android_crypto_implementation.html">is
+a tricky subject</a> and solutions are <a
+href="http://code.google.com/p/android/issues/detail?id=29468">often
+contentious</a>. At any rate; it means rooted devices (or devices that
+can be rooted through an OS/driver weakness) are at risk of exposing
+the master token - so be aware.</p>
+<p >Next, a set of core google services request OAuth tokens for their
+scopes. This also reveals how the get-token service generates access
+tokens using the master token. Here for example, is how it creates a
+token for one of the scopes requested by the market app.</p>
+<pre>
+POST https://android.clients.google.com/auth
+Parameters
+----------
+accountType:      HOSTED_OR_GOOGLE
+Email:            ...
+<strong>has_permission:   1
+Token:            1/zMASTERTOKEN
+service:          sierra</strong>
+source:           android
+androidId:        &lt;deviceid&gt;
+app:              com.android.vending
+client_sig:       38918a453d07199354f8b19af05ec6562ced5788
+device_country:   us
+operatorCountry:  us
+lang:             en
+sdk_version:      17
+</pre><p >and sure enough - it gets back:</p>
+<pre>
+SID=...
+LSID=...
+<strong>Auth=&lt;auth_token&gt;</strong>
+issueAdvice=auto
+services=hist,mail,lh2,talk,oz
+</pre><p >Indeed, all it takes is to add the <tt>has_permission=1</tt> flag to a
+request containing the master token, and down comes an access token
+for the desired scope. I also believe this permission is automatically
+added if the service notices that the requestor signature is the same
+as the google app signature; which is in fact the SHA value you see
+above.</p>
+<p >What happens when you request a token from your own app via
+<tt>GoogleUtils.getToken()</tt> for the <tt>userinfo.profile</tt> scope?</p>
+<pre>
+POST https://android.clients.google.com/auth
+Headers
+-------
+device:          &lt;deviceid&gt;
+app:             &lt;app-package-name&gt;
+Parameters
+----------
+device_country:                us
+operatorCountry:               us
+lang:                          en_US
+sdk_version:                   17
+google_play_services_version:  4132532
+accountType:                   HOSTED_OR_GOOGLE
+Email:                         &lt;email&gt;
+source:                        android
+androidId:                     &lt;device_id&gt;
+<strong>app:                           &lt;app-package-name&gt;
+client_sig:                    &lt;app-sha-signature&gt;
+service:                       oauth2:https://www.googleapis.com/auth/userinfo.profile
+Token:                         1/zMASTERTOKEN</strong>
+</pre><p >Note the absence of the <tt>has_permission=1</tt> flag, and that the
+<tt>client_sig</tt> is now the signature of the calling app.</p>
+<p >The response is:</p>
+<pre >issueAdvice=consent
+Permission=View+basic+information+about+your+account
+ScopeConsentDetails=%0AView+your+name%2C+public+profile+URL%2C+and+photo%0AView+your+gender%0AView+your+country%2C+la
+nguage%2C+and+timezone%0A
+ConsentDataBase64=...</pre>
+<p >The user-interface is controlled by the <tt>issueAdvice</tt> flag in
+the response. Automatically approved apps get the
+<tt>issueAdvice=auto</tt> flag and an access
+token. <tt>issueAdvice=consent</tt> causes the service to return an
+Intent that if launched, shows a suitable consent dialog. (The Play
+Services client library bundles this Intent into a <a
+href="https://developer.android.com/reference/com/google/android/gms/auth/UserRecoverableAuthException.html">UserRecoverableAuthException</a>.)</p>
+<p >What happens when you approve a consent dialog? Nothing much - the
+service merely adds the <tt>has_permission=1</tt> flag to a similar
+request and gets back an access token. It really can create access
+tokens for any and all scopes.</p>
+<p >By the way - this also indicates how the <a
+href="http://android-developers.blogspot.com/2013/01/verifying-back-end-calls-from-android.html">verified
+app call mechanism</a> likely works. If you specify a
+<tt>audience:server:client_id</tt> scope, the token service passes it
+as usual with the <tt>(caller_package,caller_signature)</tt> pair to
+the server. The server checks if this matches the information you
+separately registered for that app, and returns a JSON Web Token
+asserting this fact.</p>
+<p >Naturally, all this assumes the basic Android system, as well as the
+"trusted" Play Services app can securely identify the calling package;
+and that nobody other than the trusted app has access to the master
+token.</p>
+<p >Given those assumptions, it's a nice technique. The Play Services App
+contains an omnipotent "local-oauth-service"; playing the role of the
+web-based approval flow but with an Android flavor. Third-party apps
+are identified directly by their app signature, removing the need to
+embed app secrets within the apk file.</p>
+<p >Most users need (and should) enter their google password only when
+setting up their device. Apps no longer use the inherently insecure
+Webview approach to trigger the approval flow; nor do they need to use
+the awkward and tedious flow via a browser Intent. The app never sees
+anything other than the access token itself. Critical code runs only
+in the Play Services app, so bugs can be fixed by just updating one
+app.</p>
+<p >Downsides?</p>
+<p >Be aware there's a master token stored on your Android device which
+has the latent ability to grant access to services you might not even
+be accessing from it. If that token is ever exposed, you should assume
+that all data associated with the account is up for grabs. Use the <a
+href="https://www.google.com/android/devicemanager">Android Device
+Manager</a> to reduce the window of opportunity if your device is
+stolen, or manage this master token from <a
+href="https://security.google.com/settings/security/permissions?pli=1">your
+security settings</a>. Or, use a low-value account just for your
+android devices; and keep critical documents in a separate account.</p>
+<div class="spacer"></div>
+<address class="vcard h-card">
+<img style="height: 2.6em; float: left; margin-right: 0.5em;" class="photo u-photo" alt="KB Sriram" src="kbs.png"/>
+This is the personal site of
+<a href="/" class="url u-url">KB Sriram</a>.<br/>
+I'm also on
+<a href="https://plus.google.com/+KBSriram" rel="me">Google Plus</a> and
+<a href="https://github.com/kbsriram" rel="me">Github</a>.
+</address>
+</body>
+</html>

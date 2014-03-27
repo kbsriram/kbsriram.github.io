@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<base href="../../"/>
+<title>Flipboard's layout algorithm</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<link rel="stylesheet" href="media/css/main.css"/>
+</head>
+<body>
+<h1><a href="/">KB Sriram</a></h1>
+
+<div class="date">June 25, 2011</div>
+<h2>Flipboard's layout algorithm</h2>
+<p >I did some poking around how Flipboard lays out content, and here are
+my observations.</p>
+<p >1. The portrait and landscape layouts are identical -- the internal
+content of an article reflows when the orientation flips, but the
+overall article layout remains exactly the same. So in the rest of
+this, I'll only refer to the portrait orientation.</p>
+<p ><img class="half_cright" alt="impossible recursive rectangle cutting" src="media/img/cab634ee7aa06bdc55a0f50344b560a953cc73e9.png"/>2. The layout process is almost certainly "recursive rectangle
+cutting" rather than packing a set of rectangles. In other words,
+start with a big rectangle, then make a complete cut horizontally or
+vertically, and recursively cut each smaller rectangle. The tell-tale
+sign of such a process is you never see a layout like this.
+Ie, there is always at least one cut that goes from one side of
+the rectangle being cut to its opposite side, and so on, recursively.</p>
+<p >3. You can therefore associate a "cut tree" with any layout, where
+each node represents a cut -- horizontal or vertical -- and is
+labelled with the location of the cut position(s). The choice of
+cutting positions are heuristics, and Flipboard's approach seems to be
+to pick small integer ratios of the parent.</p>
+<p >If you ignore "dual" ratios (eg: 1/3 and 2/3 would be duals of each
+other) Flipboard picks cut positions that are located 1/2, 1/3, 1/4,
+2/5, and 3/8 of the parent. Which one to pick at any step is possibly
+a combination of how large the content is, and some randomization.</p>
+<p >For example, this layout</p>
+<p ><img alt="sample layout" src="media/img/719620bec84d7706d14978d7d9602af2c9b00713.png" class="centered"/></p>
+<div class="clear"></div><p >corresponds to this cut tree.</p>
+<p ><img alt="cut tree" src="media/img/f6ee63ce25195e0d6adf4299abd4015eab2d4663.png" class="centered"/></p>
+<div class="clear"></div><p >There are very likely more constraints in use, for example vertical
+cuts never use the 1/4 ratio, and further, a "vertical cut node"
+avoids vertical cut children in its subtree. For instance, a layout
+that has a root vertical cut (so it goes from top to bottom) never has
+any other vertical cuts. There can of course also be more than one cut
+tree that produces the same layout -- eg: a layout that's divided into
+four equal-sized quadrants has two equivalent cut trees, depending on
+whether you start with a horizontal or a vertical cut.</p>
+<p >That said, there's more than one way to approach the problem, and
+it can be useful to understand the underlying design goals, rather
+than view it as purely a problem of "packing" content. (Example via
+<a href="http://gridness.net/">Gridness</a>)</p>
+<p ><img alt="Gridness - page layout sample" src="http://gridness.net/wp-content/uploads/2010/09/elehpant-4.jpg" class="centered"/></p>
+<p >Many modern designers and magazines layout content within a grid, and
+you can see an example about the <a
+href="http://www.vignelli.com/canon.pdf" title="Vignelli
+Canon">underlying ideas here</a>.</p>
+<p >In essense, the page is divided into a grid that resembles a
+checkerboard, and each element of interest is reflowed into a
+contiguous subset of blocks. The intent is to establish a visual
+structure to the content, which the grid helps to maintain. Whitespace
+is often just as important as content, and eventually each grid block
+ends up being either used as content or whitespace. (This is often
+overlooked in many "packing" approaches to layout, though you may be
+able to incorporate it as "blank content" to be packed along with
+everything else.)</p>
+<p >Being aware of an underlying grid can potentially simplify algorithms
+as well as allowing internal content to settle along grid lines. A
+fairly basic approach can still use rectangle cutting, but just select
+one of the grid lines at each cut (rather than ratios of the parent,
+as Flipboard does.) It can also allow you on occasion, to create
+non-rectangular areas, especially with reflowable content. For
+example, you may be able to subtract a set of blocks out of an
+enclosing rectangular set, to add related content, and so on. You can
+see it in the pullquotes in this example from <a
+href="http://www.behance.net/gallery/Beast-in-a-Neon-Cage/1193381"
+title="Layout example with pull quotes">the Behance Network</a>.</p>
+<p ><img alt="Layout with pull quotes" src="http://behance.vo.llnwd.net/profiles2/203970/projects/1193381/d1ebfe16a56c0997825736a0f40dad7d.jpg" class="centered"/></p>
+<div class="spacer"></div>
+<address class="vcard h-card">
+<img style="height: 2.6em; float: left; margin-right: 0.5em;" class="photo u-photo" alt="KB Sriram" src="kbs.png"/>
+This is the personal site of
+<a href="/" class="url u-url">KB Sriram</a>.<br/>
+I'm also on
+<a href="https://plus.google.com/+KBSriram" rel="me">Google Plus</a> and
+<a href="https://github.com/kbsriram" rel="me">Github</a>.
+</address>
+</body>
+</html>

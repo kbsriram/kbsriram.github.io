@@ -1,0 +1,58 @@
+$date
+2011-12-03
+
+$title
+Book Review: Grouped
+
+<a href="https://twitter.com/Padday">Paul Adams</a> is an insightful
+guy. I was wowed by his early thoughts on online social networks from
+back when he was <a
+href="http://www.slideshare.net/padday/the-real-life-social-network-v2">trying
+to plug his ideas at Google</a>.
+
+So I've been waiting to read (and just finished) <a
+href="http://www.amazon.com/Grouped-groups-friends-influence-social/dp/0321804112">his
+recent book "Grouped"</a>, and a brain dump of that if you're curious.
+
+It is a fast read, and feels a lot like an "Elements of Style" for
+online social marketing. There isn't much discourse on theory, rather
+a list of expanded bullet points on what goes on in online networks,
+with a focus on marketing. The list of references at the end of each
+topic is excellent, and worth pursuing.
+
+Should you read it? Whether or not you choose to read <em>this</em> book,
+here's his perspective:
+
+<em>[To stay relevant] a new knowledge set is required [for]
+designers, marketers, developers and advertisers: social behavior,
+networks, and how people think.</em>
+
+The book distills his thoughts on these topics into self-contained
+chapters, and coming from a guy who's probably had as many scars here
+as anyone else, it'll be a useful reference for a practitioner to
+spark ideas and avoid some mistakes.
+
+However, the underlying ideas are things that he's been thinking and
+talking about for a while, and you can get the general flavor from <a
+href="http://vimeo.com/29576241">a video of one of his recent
+talks</a> if you prefer.
+
+Some of the homilies that stayed with me:
+
+1. The social web is not merely a buzz. It will gradually become what
+we think of as just "the web."
+
+2. Think of the social web like electricity -- you don't have an
+"electricity experience" in a product, it invisibly drives everything
+and you just use it.
+
+3. Center your products around people, not the technology or even the
+content. Or somebody else will, and eat your lunch to boot. (The video
+above has a example about Facebook photos and why it grew, interesting
+perspective for any 'fish readers. Also interesting examples from
+Etsy, nytimes and so on.)
+
+4. The myth of the highly influential few. Highly connected does not
+mean highly influential. He points out the situation in social groups
+is more nuanced -- basically a rebuttal to the tipping point thesis as
+applied to social marketing.﻿

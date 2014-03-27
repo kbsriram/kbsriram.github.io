@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<base href="../../"/>
+<title>The Picasa .pmp format</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<link rel="stylesheet" href="media/css/main.css"/>
+</head>
+<body>
+<h1><a href="/">KB Sriram</a></h1>
+
+<div class="date">December 12, 2011</div>
+<h2>The Picasa .pmp format</h2>
+<p >I recently needed to dig into Picasa's internal databases to get some
+information that it appeared to store only there, and not finding the
+answer on the interwebs, here are my notes about their format. Please
+do let me know if you have more information about this file format.</p>
+<p >The notes are for the Mac OS, Picasa version 3.9.0.522.</p>
+<p >The database files are found under</p>
+<pre >$HOME/Library/Application Support/Google/Picasa3/db3</pre>
+<p >on the Macs, and there are equivalent locations on other
+platforms. Under here are a set of files with a <tt>.pmp</tt> suffix,
+which are the database files.</p>
+<p >[BTW: The files with the <tt>.db</tt> suffix just hold thumbnails of
+various groups of images. They are in the standard windows thumbs.db
+format, and <a href="http://vinetto.sourceforge.net/docs.html">here's
+a link</a> that has more useful information about this format.]</p>
+<p >Each <tt>.pmp</tt> file represents a field in a table, and the table is
+identified by a common prefix as follows:</p>
+<pre >$ ls -1 catdata_*
+catdata_0
+catdata_catpri.pmp
+catdata_name.pmp
+catdata_state.pmp</pre>
+<p >The file with the <tt>_0</tt> suffix is a marker file to identify the
+table, and each <tt>.pmp</tt> file sharing that prefix is a field for
+that table. For instance, <tt>catdata_state.pmp</tt> contains records
+for the field <tt>state</tt> in the table <tt>catdata</tt>, and so
+forth.</p>
+<p >All files start with the four magic bytes: <tt>0xcd 0xcc 0xcc 0x3f</tt></p>
+<p >The marker files (ie, files that end in <tt>_0</tt>) only contain the
+magic bytes.</p>
+<p >The pmp file is in little-endian format rather than the usual network
+byte/big-endian format.</p>
+<p >There are several areas where I just see constants -- I don't know the
+purpose of these and I'll list them out. Please note: all values are
+presented in little-endian format, so if you hex-dump a file, you
+should see the bytes reversed.</p>
+<p >Header</p>
+<p >4bytes: magic: 0x3fcccccd<br/>
+2bytes: field-type: unsigned short.<br/>
+2bytes: 0x1332 -- constant.<br/>
+4bytes: 0x00000002 -- constant.<br/>
+2bytes: field-type: unsigned short -- identical with field-type above.<br/>
+2bytes: 0x1332 -- constant.<br/>
+4bytes: number-of-entries: unsigned int.<br/></p>
+<p >Following the header are "number-of-entries" records, whose format
+depends on the field-type. The field-type values are:</p>
+<p >0x0: null-terminated strings. I haven't tested how (if at all) it can store unicode.</p>
+<p >0x1: unsigned integers, 4 bytes.</p>
+<p >0x2: dates, 8 bytes as a double. The date is represented in
+Microsoft's <a
+href="http://msdn.microsoft.com/en-us/library/aa912065.aspx">Variant
+Time</a> format. The 8 bytes are a double, and the value is the number
+of days from midnight Dec 30, 1899. Fractional values are fractions of
+a day, so for instance, 3.25 represents 6:00 A.M. on January 2,
+1900. While negative values are legitimate in the Microsoft format and
+indicates days prior to Dec 30, 1899, the Picasa user interface
+currently prevents dates older than Dec 31, 1903 from being used.</p>
+<p >0x3: byte field, 1 unsigned byte.</p>
+<p >0x4: unsigned long, 8bytes.</p>
+<p >0x5: unsigned short, 2bytes.</p>
+<p >0x6: null-terminated string. (possibly csv strings?)</p>
+<p >0x7: unsigned int, 4 bytes.</p>
+<p >The entities are indexed by their record number in each file. Ie,
+fetching the 7273'rd record in all files named <tt>imagedata_*pmp</tt>
+gives information about the fields for entity #7273 in the
+<tt>imagedata</tt> table.</p>
+<p >You might expect every "field file" for a given table to contain the
+same number of records, but this is not always the case. I expect the
+underlying library returns the equivalent of undefined when fetching
+fields for a record beyond the "end" of any given field file.</p>
+<p >Finally, a small java program to dump out whatever information I've
+gathered thus far. Compile, and run against a set of .pmp files.</p>
+<p >Here is a sample run.</p>
+<pre >$ javac -g -d . Read.java
+$ java Read "$HOME/Library/Application Support/Google/Picasa3/db3/catdata_name.pmp"
+/Users/kbs/Library/Application Support/Google/Picasa3/db3/catdata_name.pmp:type=0
+nentries: 10
+[0] Labels
+[1] Projects (internal)
+[2] Folders on Disk
+[3] iPhoto Library
+[4] Web Albums
+[5] Web Drive
+[6] Exported Pictures
+[7] Other Stuff
+[8] Hidden Folders
+[9] People</pre>
+<p >And here's the code.</p>
+<pre >import java.io.*;
+import java.util.*;
+
+public class Read
+{
+    public static void main(String args[])
+        throws Exception
+    {
+        for (int i=0;i &#60;args.length; i++) {
+            doit(args[i]);
+        }
+    }
+
+    private final static void doit(String p)
+        throws Exception
+    {
+        DataInputStream din = new DataInputStream
+            (new BufferedInputStream
+             (new FileInputStream(p)));
+        dump(din, p);
+        din.close();
+    }
+
+    private final static void dump(DataInputStream din, String path)
+        throws Exception
+    {
+
+        // header
+        long magic = readUnsignedInt(din);
+        if (magic != 0x3fcccccd) {
+            throw new IOException("Failed magic1 "+Long.toString(magic,16));
+        }
+
+        int type = readUnsignedShort(din);
+        System.out.println(path+":type="+Integer.toString(type, 16));
+        if ((magic=readUnsignedShort(din)) != 0x1332) {
+            throw new IOException("Failed magic2 "+Long.toString(magic,16));
+        }
+        if ((magic=readUnsignedInt(din)) != 0x2) {
+            throw new IOException("Failed magic3 "+Long.toString(magic,16));
+        }
+        if ((magic=readUnsignedShort(din)) != type) {
+            throw new IOException("Failed repeat type "+
+                                  Long.toString(magic,16));
+        }
+        if ((magic=readUnsignedShort(din)) != 0x1332) {
+            throw new IOException("Failed magic4 "+Long.toString(magic,16));
+        }
+
+        long v = readUnsignedInt(din);
+        System.out.println("nentries: "+v);
+
+        // records.
+        if (type == 0) {
+            dumpStringField(din,v);
+        }
+        else if (type == 0x1) {
+            dump4byteField(din,v);
+        }
+        else if (type == 0x2) {
+            dumpDateField(din,v);
+        }
+        else if (type == 0x3) {
+            dumpByteField(din, v);
+        }
+        else if (type == 0x4) {
+            dump8byteField(din, v);
+        }
+        else if (type == 0x5) {
+            dump2byteField(din,v);
+        }
+        else if (type == 0x6) {
+            dumpStringField(din,v);
+        }
+        else if (type == 0x7) {
+            dump4byteField(din,v);
+        }
+        else {
+            throw new IOException("Unknown type: "+Integer.toString(type,16));
+        }
+    }
+
+    private final static void dumpStringField(DataInputStream din, long ne)
+        throws IOException
+    {
+        for (long i=0; i&#60;ne; i++) {
+            String v = getString(din);
+            System.out.println("["+i+"] "+v);
+        }
+    }
+
+    private final static void dumpByteField(DataInputStream din, long ne)
+        throws IOException
+    {
+        for (long i=0; i&#60;ne; i++) {
+            int v = din.readUnsignedByte();
+            System.out.println("["+i+"] "+v);
+        }
+    }
+
+    private final static void dump2byteField(DataInputStream din, long ne)
+        throws IOException
+    {
+        for (long idx=0; idx&#60;ne; idx++) {
+            int v = readUnsignedShort(din);
+            System.out.println("["+idx+"] "+v);
+        }
+    }
+
+    private final static void dump4byteField(DataInputStream din, long ne)
+        throws IOException
+    {
+        for (long idx=0; idx&#60;ne; idx++) {
+            long v = readUnsignedInt(din);
+            System.out.println("["+idx+"] "+v);
+        }
+    }
+
+    private final static void dump8byteField(DataInputStream din, long ne)
+        throws IOException
+    {
+        int[] bytes = new int[8];
+        for (long idx=0;idx&#60;ne; idx++) {
+            for (int i=0; i&#60;8; i++) {
+                bytes[i] = din.readUnsignedByte();
+            }
+            System.out.print("["+idx+"] ");
+            for (int i=7; i&#62;=0; i--) {
+                String x = Integer.toString(bytes[i],16);
+                if (x.length() == 1) {
+                    System.out.print("0");
+                }
+                System.out.print(x);
+            }
+            System.out.println();
+        }
+    }
+
+    private final static void dumpDateField(DataInputStream din, long ne)
+        throws IOException
+    {
+        int[] bytes = new int[8];
+        for (long idx=0;idx&#60;ne; idx++) {
+            long ld = 0;
+            for (int i=0; i&#60;8; i++) {
+                bytes[i] = din.readUnsignedByte();
+                long tmp = bytes[i];
+                tmp &#60;&#60;= (8*i);
+                ld += tmp;
+            }
+            System.out.print("["+idx+"] ");
+            for (int i=7; i&#62;=0; i--) {
+                String x = Integer.toString(bytes[i],16);
+                if (x.length() == 1) {
+                    //System.out.print("0");
+                }
+                //System.out.print(x);
+            }
+            //System.out.print(" ");
+            double d = Double.longBitsToDouble(ld);
+            //System.out.print(d);
+            //System.out.print(" ");
+
+            // days past unix epoch.
+            d -= 25569d;
+            long ut = Math.round(d*86400l*1000l);
+            System.out.println(new Date(ut));
+        }
+    }
+
+    private final static String getString(DataInputStream din)
+        throws IOException
+    {
+        StringBuffer sb = new StringBuffer();
+        int c;
+        while((c = din.read()) != 0) {
+            sb.append((char)c);
+        }
+        return sb.toString();
+    }
+
+    private final static int readUnsignedShort(DataInputStream din)
+        throws IOException
+    {
+        int ch1 = din.read();
+        int ch2 = din.read();
+        if ((ch1 | ch2) &#60; 0)
+            throw new EOFException();
+        return ((ch2&#60;&#60;8) + ch1&#60;&#60;0);
+    }
+
+    private final static long readUnsignedInt(DataInputStream din)
+        throws IOException
+    {
+        int ch1 = din.read();
+        int ch2 = din.read();
+        int ch3 = din.read();
+        int ch4 = din.read();
+        if ((ch1 | ch2 | ch3 | ch4) &#60; 0)
+            throw new EOFException();
+
+        long ret =
+            (((long)ch4)&#60;&#60;24) +
+            (((long)ch3)&#60;&#60;16) +
+            (((long)ch2)&#60;&#60;8) +
+            (((long)ch1)&#60;&#60;0);
+        return ret;
+    }
+}
+</pre>
+<div class="spacer"></div>
+<address class="vcard h-card">
+<img style="height: 2.6em; float: left; margin-right: 0.5em;" class="photo u-photo" alt="KB Sriram" src="kbs.png"/>
+This is the personal site of
+<a href="/" class="url u-url">KB Sriram</a>.<br/>
+I'm also on
+<a href="https://plus.google.com/+KBSriram" rel="me">Google Plus</a> and
+<a href="https://github.com/kbsriram" rel="me">Github</a>.
+</address>
+</body>
+</html>

@@ -1,0 +1,131 @@
+$date
+2012-12-12
+
+$title
+TypesetView: typesetting niceties for Android
+
+<a href="https://github.com/kbsriram/typesetview">TypesetView</a> is a
+View that's great for displaying paragraphs of rag-right, static body
+text in your Android app. It adds typographic niceties from more
+sophisticated text layout engines, allowing refined control over your
+content. Multicolumn text, TeX-style line breaks, margins that flow
+around arbitrary shapes and more.
+
+<strong>Multi-column text.</strong>
+
+<img class="centered" src="https://github.com/kbsriram/typesetview/raw/master/docs/columns_landscape.png" alt="Multi-column landscape example"/>
+
+You can either directly set the number of columns, or just specify a
+minimum column width. If you set a minimum column width, TypesetView
+will automatically add columns based on the available width.
+
+<strong>Flexible margins.</strong>
+
+<img class="centered" src="https://github.com/kbsriram/typesetview/raw/master/docs/flow_combined.png" alt="Flexible margins example"/>
+
+You can programatically control the margins for each line in the
+View. You can even write code to flow text around arbitrary paths,
+like around the large "O" glyph above.
+
+<strong>Advanced linebreaks.</strong>
+
+Unlike TextView, TypesetView wraps lines after examining a full
+paragraph of text. This allows it to minimize long gaps in a paragraph
+of rag-right text, if possible. Here is a side-by-side comparison of
+TextView on the left, and TypesetView on the right.
+
+<img class="half" src="https://github.com/kbsriram/typesetview/raw/master/docs/linebreak_sample.png" alt="Linebreak sample"/>
+TypesetView has moved the word "of" from the first line down to the second line, which leaves a slightly bigger gap for the first line. However, this lets it avoid a much larger gap in the third line. Software typophiles - it minimizes the sum of the squares of the end-of-line gaps in text that's set rag-right. It uses a variation of the Knuth-Plass algorithm (used in TeX.) It doesn't hyphenate words, and the "badness" of a line is simply the square of the right-side gap. The last line is ignored in the calculations.
+
+<strong>And lastly...</strong>
+
+A few small, but handy typographic controls.
+
+<img src="https://github.com/kbsriram/typesetview/raw/master/docs/glue_animated.gif" alt="Glue expansion animation" class="centered"/>
+
+First, you can allow the expansion of inter-word spaces in controlled
+amounts, if you want to further minimize gaps at the ends of lines.
+
+Second, you can set the <a
+href="https://en.wikipedia.org/wiki/Leading">typographic leading</a>
+explicitly, rather than TextView's unintuitive spacing "multipliers"
+and "adders". If you want to set text at 16/18dp - you just set
+typeSize and typeLeading to 16dp and 18dp respectively.
+
+Third, you can directly specify font families -- including fonts you
+include under your <tt>assets/</tt> folder -- directly from your XML.
+
+<strong>Using TypesetView</strong>
+
+Clone the TypesetView repository, and add <tt>typesetview-library</tt>
+as a library project. To add a TypesetView within your layout, you
+might do something like
+
+$code_begin
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:typeset="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+
+  <org.kbsriram.android.typesetview.TypesetView
+    android:layout_width="match_parent" 
+    android:layout_height="wrap_content"
+    typeset:typeColor="#ff303030"
+    typeset:typeSize="12sp"/>
+</ScrollView>
+$code_end
+
+Notice that you should use
+<tt>http://schemas.android.com/apk/res-auto</tt> to refer to the
+attributes that are specific to TypesetView.
+
+Here are the TypesetView specific attributes you can specify.
+
+<tt>typeText</tt> is a String, the text to display.
+
+<tt>typeColor</tt> is a Color to use for the text.
+
+<tt>typeFontFamily</tt> is a String, naming the font to use. There are
+three pre-defined names, <tt>sans-serif</tt>, <tt>serif</tt> and
+<tt>monospace</tt>, which will use the appropriate system provided
+fonts. If you prefix the name with the magic string <tt>assets/</tt>
+-- for example -- <tt>assets/Roboto-Slab.ttf</tt> -- it will look for
+a font file at that location under your applications <tt>assets/</tt>
+directory. In all other cases, it will ask the system to create the
+font using the provided name.
+
+<tt>typeSize</tt> is a dimension for the text size.
+
+<tt>typeLeading</tt> is a dimension for the leading (ie. the distance
+between baselines of text.
+
+<tt>typeGutterWidth</tt> is a dimension for the space between columns
+of text.
+
+<tt>typeMaximumLineStretch</tt> is a dimension that controls the
+maximum amount a line is permitted to expand. By default, it is equal
+to the leading.
+
+<tt>typeMaximumGlueExpansionRatio</tt> is a float and must be at least
+1. Spaces between words are not allowed to expand larger than this
+ratio. By default, it is 1.22
+
+<tt>typeColumnWidth</tt> is a dimension. Specify this to set a minimum
+column size, and TypesetView will automatically add columns as
+needed. If you specify this, you cannot also specify
+<tt>typeColumnCount</tt>.
+
+<tt>typeColumnCount</tt> is an integer greater than 0. Specify this to
+set exactly this many columns, regardless of the width of the view. If
+you specify this, you cannot also specify <tt>typeColumnWidth</tt>.
+
+You can programatically control margins by implementing the
+TypesetView.MarginPosition interface. Please look at the provided
+examples for further guidance on using this interface. Good luck and
+make great content!
+
+<img class="centered" src="https://github.com/kbsriram/typesetview/raw/master/docs/goofing_around.jpg" alt="A nice layout"/>
+
+<small>Some images and text used within the examples are from the
+<a href="http://www.ndc.co.jp/en/">Nippon Design Center</a>.</small>

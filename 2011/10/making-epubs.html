@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<base href="../../"/>
+<title>Making Epubs</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<link rel="stylesheet" href="media/css/main.css"/>
+</head>
+<body>
+<h1><a href="/">KB Sriram</a></h1>
+
+<div class="date">October 2, 2011</div>
+<h2>Making Epubs</h2>
+<p >Recently, I read a few stories from <a href="http://www.folklore.org/">Andy Hertzfeld's site</a>, which are terrific stories about the development of the Macintosh. As I read it, I started to view a few videos, some podcasts etc that were connected to the stories. Wouldn't it be nice to bundle all of this into a single epub, so it's all in one place?</p>
+<p >Well, you can always do that by editing an epub in <a href="http://code.google.com/p/sigil/">Sigil</a> or other tools. However, I've found it convenient to take out some of the tedium through a couple of small scripts that bundle everything together from txt files. The scripts do very little -- it's best suited when you pretty much have straight text, and perhaps a set of media that you want to insert into the text at appropriate places.</p>
+<p >It also assumes that you're reasonably comfortable with the command-line, and can deal with a couple of thrown-together scripts. [Fortunately, they are small so I hope they will at least be a starting point.]</p>
+<p >Here's how I assemble my epub. First, I create a directory that will hold all the content I want in the epub.</p>
+<pre >$ mkdir macintosh_stories</pre>
+<p >Next, I create text files -- one for each chapter, to contain the text. So (say) I create one file called <tt>macintosh_stories/01.txt</tt> that contains this:</p>
+<pre >#Alice
+
+Even though Bruce Daniels was the manager of the Lisa software team,
+he was very supportive of the Mac project. He had written the
+mouse-based text editor that we were using on the Lisa to write all of
+our code, and he even transferred to the Mac team as a mere programmer
+...</pre>
+<p >You can mark (2 levels) of headlines with the <tt>#</tt> character. One <tt>#</tt> is the largest headline, and <tt>##</tt> gives a subheading. There isn't anything much else it does, though you can notate italics by <tt>_italics_</tt>.</p>
+<p >This is sufficient to create the first epub -- and you run it as</p>
+<pre >$ gen.sh macintosh_stories "Macintosh Stories" "Andy Hertzfeld"</pre>
+<p >Let it do its thing, and your epub will be left under <tt>macintosh_stories/out.epub</tt></p>
+<p >To create more chapters -- keep adding more txt files. The sequence of chapters are strictly determined by the filename of the text file -- so I usually create text files like <tt>01_xxx.txt</tt>, <tt>02_xxx.txt</tt> and so on.</p>
+<p >To add a cover and other media, first create a directory called media</p>
+<pre >$ mkdir macintosh_stories/media</pre>
+<p >If you then create a file called <tt>macintosh_stories/media/cover.jpg</tt>, the scripts will add the cover to the epub.</p>
+<p >To add images into the file, first place them into the media
+directory. For example, in the above story -- there's an image of the
+packaging, which I've saved as
+<tt>macintosh_stories/media/alice_packaging.jpg</tt></p>
+<p >From within <tt>01.txt</tt>, I refer to it as:</p>
+<pre >...
+disk was enclosed in a small cardboard box designed to look like a
+finely printed, old fashioned book, complete with an elaborate woodcut
+on the cover, that contained a hidden Dead Kennedy's logo, in tribute
+to one of Capp's favorite bands.
+
+[&#62; media/alice_packaging.jpg &#60;]
+
+Since Alice didn't take up the whole disk, Capps including a few other
+goodies with it, including a font and "Amazing", a fascinating maze
+...</pre>
+<p >Now I was curious how the game itself looked. So I downloaded a youtube video. Please note that it <em>must</em> be an mp4 file. This too, I put into the media directory, and embed it the same way in my txt file.</p>
+<pre >...
+Since Alice didn't take up the whole disk, Capps including a few other
+goodies with it, including a font and "Amazing", a fascinating maze
+generating program that he wrote.
+
+[&#62; media/alice.mp4 &#60;]
+
+When I saw the completed packaging, I was surprised to discover that
+...</pre>
+<p >You can also embed audio in the same way as well, interviews,
+podcasts, or audio versions all work well. But please note that it
+must be in the .m4a format. This is the only format that works on the
+Color Nook. I use <a href="http://ffmpeg.org/">ffmpeg</a> to convert
+an mp3s into m4a, and that seems to do the trick.</p>
+<p >Here is a <a
+href="http://dl.dropbox.com/u/18852638/epub_scripts.zip">zip file of
+the scripts</a> and just for kicks, <a
+href="http://dl.dropbox.com/u/18852638/macintosh_stories.epub">the
+sample epub</a>.</p>
+<div class="spacer"></div>
+<address class="vcard h-card">
+<img style="height: 2.6em; float: left; margin-right: 0.5em;" class="photo u-photo" alt="KB Sriram" src="kbs.png"/>
+This is the personal site of
+<a href="/" class="url u-url">KB Sriram</a>.<br/>
+I'm also on
+<a href="https://plus.google.com/+KBSriram" rel="me">Google Plus</a> and
+<a href="https://github.com/kbsriram" rel="me">Github</a>.
+</address>
+</body>
+</html>

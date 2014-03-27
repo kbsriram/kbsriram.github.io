@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<base href="../../"/>
+<title>TypesetView: typesetting niceties for Android</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<link rel="stylesheet" href="media/css/main.css"/>
+</head>
+<body>
+<h1><a href="/">KB Sriram</a></h1>
+
+<div class="date">December 12, 2012</div>
+<h2>TypesetView: typesetting niceties for Android</h2>
+<p ><a href="https://github.com/kbsriram/typesetview">TypesetView</a> is a
+View that's great for displaying paragraphs of rag-right, static body
+text in your Android app. It adds typographic niceties from more
+sophisticated text layout engines, allowing refined control over your
+content. Multicolumn text, TeX-style line breaks, margins that flow
+around arbitrary shapes and more.</p>
+<p ><strong>Multi-column text.</strong></p>
+<p ><img class="centered" src="https://github.com/kbsriram/typesetview/raw/master/docs/columns_landscape.png" alt="Multi-column landscape example"/></p>
+<p >You can either directly set the number of columns, or just specify a
+minimum column width. If you set a minimum column width, TypesetView
+will automatically add columns based on the available width.</p>
+<p ><strong>Flexible margins.</strong></p>
+<p ><img class="centered" src="https://github.com/kbsriram/typesetview/raw/master/docs/flow_combined.png" alt="Flexible margins example"/></p>
+<p >You can programatically control the margins for each line in the
+View. You can even write code to flow text around arbitrary paths,
+like around the large "O" glyph above.</p>
+<p ><strong>Advanced linebreaks.</strong></p>
+<p >Unlike TextView, TypesetView wraps lines after examining a full
+paragraph of text. This allows it to minimize long gaps in a paragraph
+of rag-right text, if possible. Here is a side-by-side comparison of
+TextView on the left, and TypesetView on the right.</p>
+<p ><img class="half" src="https://github.com/kbsriram/typesetview/raw/master/docs/linebreak_sample.png" alt="Linebreak sample"/>
+TypesetView has moved the word "of" from the first line down to the second line, which leaves a slightly bigger gap for the first line. However, this lets it avoid a much larger gap in the third line. Software typophiles - it minimizes the sum of the squares of the end-of-line gaps in text that's set rag-right. It uses a variation of the Knuth-Plass algorithm (used in TeX.) It doesn't hyphenate words, and the "badness" of a line is simply the square of the right-side gap. The last line is ignored in the calculations.</p>
+<p ><strong>And lastly...</strong></p>
+<p >A few small, but handy typographic controls.</p>
+<p ><img src="https://github.com/kbsriram/typesetview/raw/master/docs/glue_animated.gif" alt="Glue expansion animation" class="centered"/></p>
+<p >First, you can allow the expansion of inter-word spaces in controlled
+amounts, if you want to further minimize gaps at the ends of lines.</p>
+<p >Second, you can set the <a
+href="https://en.wikipedia.org/wiki/Leading">typographic leading</a>
+explicitly, rather than TextView's unintuitive spacing "multipliers"
+and "adders". If you want to set text at 16/18dp - you just set
+typeSize and typeLeading to 16dp and 18dp respectively.</p>
+<p >Third, you can directly specify font families -- including fonts you
+include under your <tt>assets/</tt> folder -- directly from your XML.</p>
+<p ><strong>Using TypesetView</strong></p>
+<p >Clone the TypesetView repository, and add <tt>typesetview-library</tt>
+as a library project. To add a TypesetView within your layout, you
+might do something like</p>
+<pre >&#60;ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:typeset="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"&#62;
+
+  &#60;org.kbsriram.android.typesetview.TypesetView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    typeset:typeColor="#ff303030"
+    typeset:typeSize="12sp"/&#62;
+&#60;/ScrollView&#62;</pre>
+<p >Notice that you should use
+<tt>http://schemas.android.com/apk/res-auto</tt> to refer to the
+attributes that are specific to TypesetView.</p>
+<p >Here are the TypesetView specific attributes you can specify.</p>
+<p ><tt>typeText</tt> is a String, the text to display.</p>
+<p ><tt>typeColor</tt> is a Color to use for the text.</p>
+<p ><tt>typeFontFamily</tt> is a String, naming the font to use. There are
+three pre-defined names, <tt>sans-serif</tt>, <tt>serif</tt> and
+<tt>monospace</tt>, which will use the appropriate system provided
+fonts. If you prefix the name with the magic string <tt>assets/</tt>
+-- for example -- <tt>assets/Roboto-Slab.ttf</tt> -- it will look for
+a font file at that location under your applications <tt>assets/</tt>
+directory. In all other cases, it will ask the system to create the
+font using the provided name.</p>
+<p ><tt>typeSize</tt> is a dimension for the text size.</p>
+<p ><tt>typeLeading</tt> is a dimension for the leading (ie. the distance
+between baselines of text.</p>
+<p ><tt>typeGutterWidth</tt> is a dimension for the space between columns
+of text.</p>
+<p ><tt>typeMaximumLineStretch</tt> is a dimension that controls the
+maximum amount a line is permitted to expand. By default, it is equal
+to the leading.</p>
+<p ><tt>typeMaximumGlueExpansionRatio</tt> is a float and must be at least
+1. Spaces between words are not allowed to expand larger than this
+ratio. By default, it is 1.22</p>
+<p ><tt>typeColumnWidth</tt> is a dimension. Specify this to set a minimum
+column size, and TypesetView will automatically add columns as
+needed. If you specify this, you cannot also specify
+<tt>typeColumnCount</tt>.</p>
+<p ><tt>typeColumnCount</tt> is an integer greater than 0. Specify this to
+set exactly this many columns, regardless of the width of the view. If
+you specify this, you cannot also specify <tt>typeColumnWidth</tt>.</p>
+<p >You can programatically control margins by implementing the
+TypesetView.MarginPosition interface. Please look at the provided
+examples for further guidance on using this interface. Good luck and
+make great content!</p>
+<p ><img class="centered" src="https://github.com/kbsriram/typesetview/raw/master/docs/goofing_around.jpg" alt="A nice layout"/></p>
+<p ><small>Some images and text used within the examples are from the
+<a href="http://www.ndc.co.jp/en/">Nippon Design Center</a>.</small></p>
+<div class="spacer"></div>
+<address class="vcard h-card">
+<img style="height: 2.6em; float: left; margin-right: 0.5em;" class="photo u-photo" alt="KB Sriram" src="kbs.png"/>
+This is the personal site of
+<a href="/" class="url u-url">KB Sriram</a>.<br/>
+I'm also on
+<a href="https://plus.google.com/+KBSriram" rel="me">Google Plus</a> and
+<a href="https://github.com/kbsriram" rel="me">Github</a>.
+</address>
+</body>
+</html>

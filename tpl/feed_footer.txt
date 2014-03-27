@@ -1,0 +1,1 @@
+<p class="pager">${page_older}${page_newer}</p>
