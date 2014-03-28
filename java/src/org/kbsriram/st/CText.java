@@ -80,11 +80,14 @@ public class CText
         Map<String,String> vars = new HashMap<String,String>();
         vars.put("title", htmlEscape(m_title));
         vars.put("date", niceDate(m_date));
+        vars.put("iso8601", iso8601(m_date));
         cat(new File(tplroot, "article_header.txt"), pw, vars);
 
+        pw.println("<div class=\"e-content entry-content\">");
         for (Block para: m_paras) {
             writeParagraph(para, pw);
         }
+        pw.println("</div>");
 
         cat(new File(tplroot, "footer.txt"), pw, null);
         pw.close();
@@ -208,7 +211,7 @@ public class CText
             String v = vars.get(m.group(1));
             if (v == null) {
                 throw new IllegalArgumentException
-                    ("Missing '"+v+"' in "+line);
+                    ("Missing '"+m.group(1)+"' in "+line);
             }
             sb.append(v);
             cur = m.end();

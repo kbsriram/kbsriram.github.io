@@ -7,11 +7,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <link rel="stylesheet" href="media/css/main.css"/>
 </head>
-<body>
-<h1><a href="/">KB Sriram</a></h1>
+<body class="hentry h-entry">
+<h1><a href="/" class="p-author h-card" rel="author">KB Sriram</a></h1>
 
-<div class="date">August 9, 2013</div>
-<h2>Quick tip - loading Android nine-patch drawables</h2>
+<div class="date dt-published published dt-updated updated"><time datetime="2013-08-09">August 9, 2013</time></div>
+<h2 class="p-name entry-title">Quick tip - loading Android nine-patch drawables</h2>
+<div class="e-content entry-content">
 <p >Did you need to load a stretchy nine-patch drawable from your assets
 or the network, rather than directly via a resource? If so, you begin
 to realize that the <tt>foo.9.png</tt> file in your source is actually
@@ -29,6 +30,7 @@ to create a Bitmap from <tt>compiled_input.9.png</tt>, and then use</p>
 href="http://developer.android.com/reference/android/graphics/NinePatch.html">NinePatch</a>,
 and then use that within a suitable NinePatchDrawable constructor to
 arrive at a nice, stretchable Drawable.﻿</p>
+</div>
 <div class="spacer"></div>
 <address class="vcard h-card">
 <img style="height: 2.6em; float: left; margin-right: 0.5em;" class="photo u-photo" alt="KB Sriram" src="kbs.png"/>
