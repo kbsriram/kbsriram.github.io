@@ -145,7 +145,7 @@ img.lead_initial {
     margin-right: 0.5em;
 }
 
-address,small {
+small,address {
     font-size: 0.7272em;
     line-height: 1.375em;
     font-style: normal;
