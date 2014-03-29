@@ -151,6 +151,22 @@ small,address {
     font-style: normal;
 }
 
+div.relative_flip {
+    position: relative;
+}
+
+div.show_onhover {
+    opacity: 0;
+    -webkit-transition: opacity 0.2s linear;
+    -moz-transition: opacity 0.2s linear;
+    -o-transition: opacity 0.2s linear;
+    transition: opacity 0.2s linear;
+}
+
+div.show_onhover:hover {
+    opacity: 1;
+}
+
 div.date {
     font-size: 0.7272em;
     line-height: 1.375em;
@@ -197,5 +213,10 @@ div.clear {
     img.half_noclear {
         width: 350px;
         float: left;
+    }
+    div.relative_flip {
+        margin-right: 1em;
+        float: left;
+        clear: left;
     }
 }
