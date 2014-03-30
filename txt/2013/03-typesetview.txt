@@ -5,7 +5,7 @@ $title
 TypesetView: typesetting niceties for Android
 
 <a href="https://github.com/kbsriram/typesetview"><img
-src="media/img/024e17cb7cbf763cfbe946ac2cb4ba08235fc970.jpg"
+src="/media/img/024e17cb7cbf763cfbe946ac2cb4ba08235fc970.jpg"
 alt="TypesetView screenshot" class="half"/></a>
 <a href="https://github.com/kbsriram/typesetview">TypesetView</a> is a
 View that's great for displaying paragraphs of rag-right, static body

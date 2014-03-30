@@ -6,7 +6,7 @@ SaveMyPics - autosave your photos to Snapfish (Android app)
 
 <a
 href="https://play.google.com/store/apps/details?id=org.savemypics.android"><img
-src="media/img/b21b02b3a6c0f1ecd5428898979e4586ede8757b.png"
+src="/media/img/b21b02b3a6c0f1ecd5428898979e4586ede8757b.png"
 class="lead_initial" alt="SaveMyPics icon"></a>
 Autosave your photos to Snapfish with <a
 href="https://play.google.com/store/apps/details?id=org.savemypics.android">this
@@ -14,7 +14,7 @@ simple Android app</a>.  Wakes up when there are new pictures and
 saves them to your <a href="https://www.snapfish.com">Snapfish
 account</a>.
 
-<img src="media/img/d264541a3e3d6706b76b364f7a0543066e31f97a.jpg"
+<img src="/media/img/d264541a3e3d6706b76b364f7a0543066e31f97a.jpg"
 alt="Save My Pics screenshot" class="half"/>
 Getting pictures off my Nexus 4 into Snapfish has always been a chore,
 and I'm a fan of single-minded automated apps. So I wrote this and

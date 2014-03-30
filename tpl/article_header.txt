@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<base href="../../"/>
 <title>${title}</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<link rel="stylesheet" href="media/css/main.css"/>
+<link rel="stylesheet" href="/media/css/main.css"/>
+<link rel="signature" type="application/pgp-signature" href="${filename}.asc"/>
 </head>
 <body class="hentry h-entry">
 <h1><a href="/" class="p-author h-card" rel="author">KB Sriram</a></h1>

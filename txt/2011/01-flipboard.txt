@@ -12,7 +12,7 @@ content of an article reflows when the orientation flips, but the
 overall article layout remains exactly the same. So in the rest of
 this, I'll only refer to the portrait orientation.
 
-<img class="half_cright" alt="impossible recursive rectangle cutting" src="media/img/cab634ee7aa06bdc55a0f50344b560a953cc73e9.png"/>2. The layout process is almost certainly "recursive rectangle
+<img class="half_cright" alt="impossible recursive rectangle cutting" src="/media/img/cab634ee7aa06bdc55a0f50344b560a953cc73e9.png"/>2. The layout process is almost certainly "recursive rectangle
 cutting" rather than packing a set of rectangles. In other words,
 start with a big rectangle, then make a complete cut horizontally or
 vertically, and recursively cut each smaller rectangle. The tell-tale
@@ -33,14 +33,14 @@ a combination of how large the content is, and some randomization.
 
 For example, this layout
 
-<img alt="sample layout" src="media/img/719620bec84d7706d14978d7d9602af2c9b00713.png" class="centered"/>
+<img alt="sample layout" src="/media/img/719620bec84d7706d14978d7d9602af2c9b00713.png" class="centered"/>
 
 $asis
 <div class="clear"></div>
 
 corresponds to this cut tree.
 
-<img alt="cut tree" src="media/img/f6ee63ce25195e0d6adf4299abd4015eab2d4663.png" class="centered"/>
+<img alt="cut tree" src="/media/img/f6ee63ce25195e0d6adf4299abd4015eab2d4663.png" class="centered"/>
 
 $asis
 <div class="clear"></div>

@@ -80,6 +80,7 @@ public class CText
         Map<String,String> vars = new HashMap<String,String>();
         vars.put("title", htmlEscape(m_title));
         vars.put("date", niceDate(m_date));
+        vars.put("filename", dst.getName());
         vars.put("iso8601", iso8601(m_date));
         cat(new File(tplroot, "article_header.txt"), pw, vars);
 

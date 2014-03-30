@@ -1,6 +1,6 @@
 <div class="spacer"></div>
 <address class="vcard h-card">
-<img style="height: 2.6em; float: left; margin-right: 0.5em;" class="photo u-photo" alt="KB Sriram" src="kbs.png"/>
+<img style="height: 2.6em; float: left; margin-right: 0.5em;" class="photo u-photo" alt="KB Sriram" src="/kbs.png"/>
 Hi, I'm
 <a href="http://kbsriram.com" class="fn url u-url p-name">KB Sriram</a>.<br/>
 You can also find me on

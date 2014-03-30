@@ -32,7 +32,7 @@ replaces the traditional web-based OAuth approval flow.
 3. Third-party apps are identified by their signature and package
 name, rather than an application-key/application-secret.
 
-<img alt="separation of responsibilities" src="media/img/0768c6cd6c1f7fdeeaf1797210719da1e69d9177.png" class="centered"/>
+<img alt="separation of responsibilities" src="/media/img/0768c6cd6c1f7fdeeaf1797210719da1e69d9177.png" class="centered"/>
 
 The green areas run "trusted" code. Your app uses the Google Play
 Services client library; but the library itself doesn't run critical

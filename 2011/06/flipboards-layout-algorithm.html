@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<base href="../../"/>
 <title>Flipboard's layout algorithm</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<link rel="stylesheet" href="media/css/main.css"/>
+<link rel="stylesheet" href="/media/css/main.css"/>
+<link rel="signature" type="application/pgp-signature" href="flipboards-layout-algorithm.html.asc"/>
 </head>
 <body class="hentry h-entry">
 <h1><a href="/" class="p-author h-card" rel="author">KB Sriram</a></h1>
@@ -19,7 +19,7 @@ my observations.</p>
 content of an article reflows when the orientation flips, but the
 overall article layout remains exactly the same. So in the rest of
 this, I'll only refer to the portrait orientation.</p>
-<p ><img class="half_cright" alt="impossible recursive rectangle cutting" src="media/img/cab634ee7aa06bdc55a0f50344b560a953cc73e9.png"/>2. The layout process is almost certainly "recursive rectangle
+<p ><img class="half_cright" alt="impossible recursive rectangle cutting" src="/media/img/cab634ee7aa06bdc55a0f50344b560a953cc73e9.png"/>2. The layout process is almost certainly "recursive rectangle
 cutting" rather than packing a set of rectangles. In other words,
 start with a big rectangle, then make a complete cut horizontally or
 vertically, and recursively cut each smaller rectangle. The tell-tale
@@ -36,9 +36,9 @@ other) Flipboard picks cut positions that are located 1/2, 1/3, 1/4,
 2/5, and 3/8 of the parent. Which one to pick at any step is possibly
 a combination of how large the content is, and some randomization.</p>
 <p >For example, this layout</p>
-<p ><img alt="sample layout" src="media/img/719620bec84d7706d14978d7d9602af2c9b00713.png" class="centered"/></p>
+<p ><img alt="sample layout" src="/media/img/719620bec84d7706d14978d7d9602af2c9b00713.png" class="centered"/></p>
 <div class="clear"></div><p >corresponds to this cut tree.</p>
-<p ><img alt="cut tree" src="media/img/f6ee63ce25195e0d6adf4299abd4015eab2d4663.png" class="centered"/></p>
+<p ><img alt="cut tree" src="/media/img/f6ee63ce25195e0d6adf4299abd4015eab2d4663.png" class="centered"/></p>
 <div class="clear"></div><p >There are very likely more constraints in use, for example vertical
 cuts never use the 1/4 ratio, and further, a "vertical cut node"
 avoids vertical cut children in its subtree. For instance, a layout
@@ -80,7 +80,7 @@ title="Layout example with pull quotes">the Behance Network</a>.</p>
 </div>
 <div class="spacer"></div>
 <address class="vcard h-card">
-<img style="height: 2.6em; float: left; margin-right: 0.5em;" class="photo u-photo" alt="KB Sriram" src="kbs.png"/>
+<img style="height: 2.6em; float: left; margin-right: 0.5em;" class="photo u-photo" alt="KB Sriram" src="/kbs.png"/>
 Hi, I'm
 <a href="http://kbsriram.com" class="fn url u-url p-name">KB Sriram</a>.<br/>
 You can also find me on

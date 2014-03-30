@@ -47,6 +47,7 @@ public class CFeed
                     (new BufferedWriter
                      (new FileWriter(dst)));
                 vars.put("title", "KB Sriram");
+                vars.put("filename", dst.getName());
                 if (pagenum == 0) {
                     vars.put("header", "KB Sriram");
                 }

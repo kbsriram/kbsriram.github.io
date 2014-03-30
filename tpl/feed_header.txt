@@ -8,6 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <link rel="apple-touch-icon-precomposed" href="kbs.png" />
 <link rel="stylesheet" href="media/css/main.css"/>
+<link rel="signature" type="application/pgp-signature" href="${filename}.asc"/>
 </head>
 <body>
 <h1>${header}</h1>

@@ -6,7 +6,7 @@ Poor Richard's Widget
 
 <a
 href="https://play.google.com/store/apps/details?id=org.kbsriram.android.prw"><img
-src="media/img/5bf8547bbdbc70c79df38df0d2100eee63759ea5.png"
+src="/media/img/5bf8547bbdbc70c79df38df0d2100eee63759ea5.png"
 class="lead_initial" alt="Poor Richard's Widget icon"></a>
 <a
 href="https://play.google.com/store/apps/details?id=org.kbsriram.android.prw">A
