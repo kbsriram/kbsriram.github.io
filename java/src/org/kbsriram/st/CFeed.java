@@ -53,7 +53,10 @@ public class CFeed
                 }
                 else {
                     vars.put
-                        ("header", "<a href=\"/\">KB Sriram</a>");
+                        ("header",
+                         "<a rel=\"author\" "+
+                         "class=\"p-author h-card\" "+
+                         "href=\"/\">KB Sriram</a>");
                 }
                 CText.cat(new File(tplroot, "feed_header.txt"), pw, vars);
             }
@@ -92,7 +95,12 @@ public class CFeed
         vars.put("page_older", linkTo(curpage+1, maxpage, "Older", "prev"));
         vars.put("page_newer", linkTo(curpage-1, maxpage, "Newer", "next"));
         CText.cat(new File(tplroot, "feed_footer.txt"), pw, vars);
-        CText.cat(new File(tplroot, "footer.txt"), pw, null);
+        if ((curpage == 0) || (maxpage == 1)) {
+            CText.cat(new File(tplroot, "index_footer.txt"), pw, null);
+        }
+        else {
+            CText.cat(new File(tplroot, "footer.txt"), pw, null);
+        }
         pw.close();
     }
 
