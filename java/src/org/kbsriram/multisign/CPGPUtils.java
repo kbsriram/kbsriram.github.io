@@ -1,66 +1,70 @@
 package org.kbsriram.multisign;
 
-import org.bouncycastle.openpgp.PGPPublicKeyRing;
-import org.bouncycastle.openpgp.PGPPublicKeyRingCollection;
-import org.bouncycastle.openpgp.PGPSecretKeyRing;
-import org.bouncycastle.openpgp.PGPSecretKeyRingCollection;
-import org.bouncycastle.openpgp.PGPPBEEncryptedData;
-import org.bouncycastle.openpgp.PGPUtil;
-import org.bouncycastle.openpgp.PGPObjectFactory;
-import org.bouncycastle.openpgp.PGPException;
-import org.bouncycastle.openpgp.PGPKeyRingGenerator;
-import org.bouncycastle.openpgp.PGPKeyPair;
-import org.bouncycastle.openpgp.PGPPublicKey;
-import org.bouncycastle.openpgp.PGPSecretKey;
-import org.bouncycastle.openpgp.PGPPrivateKey;
-import org.bouncycastle.openpgp.PGPSignatureSubpacketGenerator;
-import org.bouncycastle.openpgp.PGPSignatureGenerator;
-import org.bouncycastle.openpgp.PGPSignature;
-import org.bouncycastle.openpgp.PGPOnePassSignature;
-import org.bouncycastle.openpgp.PGPEncryptedData;
-import org.bouncycastle.openpgp.PGPEncryptedDataList;
-import org.bouncycastle.openpgp.PGPEncryptedDataGenerator;
-import org.bouncycastle.openpgp.PGPPublicKeyEncryptedData;
-import org.bouncycastle.openpgp.PGPCompressedData;
-import org.bouncycastle.openpgp.PGPCompressedDataGenerator;
-import org.bouncycastle.openpgp.PGPLiteralData;
-import org.bouncycastle.openpgp.PGPLiteralDataGenerator;
-import org.bouncycastle.openpgp.PGPOnePassSignatureList;
-import org.bouncycastle.openpgp.PGPSignatureList;
-import org.bouncycastle.openpgp.operator.PGPDigestCalculator;
-import org.bouncycastle.openpgp.operator.PGPKeyEncryptionMethodGenerator;
-import org.bouncycastle.openpgp.operator.PBEKeyEncryptionMethodGenerator;
-import org.bouncycastle.openpgp.operator.PBESecretKeyEncryptor;
-import org.bouncycastle.openpgp.operator.bc.BcPGPDigestCalculatorProvider;
-import org.bouncycastle.openpgp.operator.bc.BcPGPContentSignerBuilder;
-import org.bouncycastle.openpgp.operator.bc.BcPBESecretKeyEncryptorBuilder;
-import org.bouncycastle.openpgp.operator.bc.BcPBEKeyEncryptionMethodGenerator;
-import org.bouncycastle.openpgp.operator.bc.BcPGPDataEncryptorBuilder;
-import org.bouncycastle.openpgp.operator.bc.BcPBESecretKeyDecryptorBuilder;
-import org.bouncycastle.openpgp.operator.bc.BcPublicKeyDataDecryptorFactory;
-import org.bouncycastle.openpgp.operator.bc.BcPBEDataDecryptorFactory;
-import org.bouncycastle.openpgp.operator.bc.BcPGPContentVerifierBuilderProvider;
-import org.bouncycastle.openpgp.operator.bc.BcPGPKeyPair;
-import org.bouncycastle.openpgp.operator.bc.BcPublicKeyKeyEncryptionMethodGenerator;
-import org.bouncycastle.bcpg.SymmetricKeyAlgorithmTags;
-import org.bouncycastle.bcpg.HashAlgorithmTags;
-import org.bouncycastle.bcpg.S2K;
-import org.bouncycastle.bcpg.sig.Features;
-import org.bouncycastle.bcpg.sig.KeyFlags;
-import org.bouncycastle.crypto.RuntimeCryptoException;
-import org.bouncycastle.crypto.generators.RSAKeyPairGenerator;
-import org.bouncycastle.crypto.params.RSAKeyGenerationParameters;
 
-import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.security.SignatureException;
 import java.util.Date;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
+import org.bouncycastle.bcpg.HashAlgorithmTags;
+import org.bouncycastle.bcpg.S2K;
+import org.bouncycastle.bcpg.SignatureSubpacketTags;
+import org.bouncycastle.bcpg.SymmetricKeyAlgorithmTags;
+import org.bouncycastle.bcpg.sig.Features;
+import org.bouncycastle.bcpg.sig.KeyFlags;
+import org.bouncycastle.bcpg.sig.SignatureCreationTime;
+import org.bouncycastle.bcpg.sig.SignatureExpirationTime;
+import org.bouncycastle.crypto.RuntimeCryptoException;
+import org.bouncycastle.crypto.generators.RSAKeyPairGenerator;
+import org.bouncycastle.crypto.params.RSAKeyGenerationParameters;
+import org.bouncycastle.openpgp.PGPCompressedData;
+import org.bouncycastle.openpgp.PGPCompressedDataGenerator;
+import org.bouncycastle.openpgp.PGPEncryptedData;
+import org.bouncycastle.openpgp.PGPEncryptedDataGenerator;
+import org.bouncycastle.openpgp.PGPEncryptedDataList;
+import org.bouncycastle.openpgp.PGPException;
+import org.bouncycastle.openpgp.PGPKeyPair;
+import org.bouncycastle.openpgp.PGPKeyRingGenerator;
+import org.bouncycastle.openpgp.PGPLiteralData;
+import org.bouncycastle.openpgp.PGPLiteralDataGenerator;
+import org.bouncycastle.openpgp.PGPObjectFactory;
+import org.bouncycastle.openpgp.PGPOnePassSignature;
+import org.bouncycastle.openpgp.PGPOnePassSignatureList;
+import org.bouncycastle.openpgp.PGPPBEEncryptedData;
+import org.bouncycastle.openpgp.PGPPrivateKey;
+import org.bouncycastle.openpgp.PGPPublicKey;
+import org.bouncycastle.openpgp.PGPPublicKeyEncryptedData;
+import org.bouncycastle.openpgp.PGPPublicKeyRing;
+import org.bouncycastle.openpgp.PGPPublicKeyRingCollection;
+import org.bouncycastle.openpgp.PGPSecretKey;
+import org.bouncycastle.openpgp.PGPSecretKeyRing;
+import org.bouncycastle.openpgp.PGPSecretKeyRingCollection;
+import org.bouncycastle.openpgp.PGPSignature;
+import org.bouncycastle.openpgp.PGPSignatureGenerator;
+import org.bouncycastle.openpgp.PGPSignatureList;
+import org.bouncycastle.openpgp.PGPSignatureSubpacketGenerator;
+import org.bouncycastle.openpgp.PGPSignatureSubpacketVector;
+import org.bouncycastle.openpgp.PGPUtil;
+import org.bouncycastle.openpgp.operator.PBEKeyEncryptionMethodGenerator;
+import org.bouncycastle.openpgp.operator.PBESecretKeyEncryptor;
+import org.bouncycastle.openpgp.operator.PGPDigestCalculator;
+import org.bouncycastle.openpgp.operator.PGPKeyEncryptionMethodGenerator;
+import org.bouncycastle.openpgp.operator.bc.BcPBEDataDecryptorFactory;
+import org.bouncycastle.openpgp.operator.bc.BcPBEKeyEncryptionMethodGenerator;
+import org.bouncycastle.openpgp.operator.bc.BcPBESecretKeyDecryptorBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPBESecretKeyEncryptorBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPGPContentSignerBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPGPContentVerifierBuilderProvider;
+import org.bouncycastle.openpgp.operator.bc.BcPGPDataEncryptorBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPGPDigestCalculatorProvider;
+import org.bouncycastle.openpgp.operator.bc.BcPGPKeyPair;
+import org.bouncycastle.openpgp.operator.bc.BcPublicKeyDataDecryptorFactory;
+import org.bouncycastle.openpgp.operator.bc.BcPublicKeyKeyEncryptionMethodGenerator;
 
 public class CPGPUtils
 {
@@ -793,39 +797,95 @@ public class CPGPUtils
             }
         }
 
-        Iterator<String> uids = master.getUserIDs();
-        String uid;
-        // exactly one.
-        if (uids.hasNext()) { uid = uids.next(); }
-        else { throw new PGPException("Missing user-id packet."); }
-        if (uids.hasNext()) {
-            throw new PGPException("Only one user-id allowed.");
-        }
 
-        boolean ok = false;
-        Iterator<PGPSignature> sigs = master.getSignatures();
-        if (sigs != null) {
-            while (sigs.hasNext()) {
-                PGPSignature sig = sigs.next();
-                // Only accept a very strict subset of signatures.
-                if ((sig.getKeyID() != master.getKeyID()) ||
-                    (sig.getSignatureType() !=
-                     PGPSignature.POSITIVE_CERTIFICATION)) {
-                    throw new PGPException
-                        ("Disallowed signature on master key");
+        boolean has_one = false;
+        for (Iterator<String> uidit = master.getUserIDs(); uidit.hasNext();) {
+            has_one = true;
+            String uid = uidit.next();
+            boolean ok = false;
+            for (Iterator<PGPSignature> sigsit = master.getSignaturesForID(uid);
+                 sigsit.hasNext();) {
+                PGPSignature sig = sigsit.next();
+
+                if (!acceptableSignature(sig, master)) {
+                    continue;
                 }
-
-                sig.init(s_provider, master);
-                ok = sig.verifyCertification(uid, master);
-                if (!ok) {
-                    throw new PGPException("incorrect master self-signature");
+                if (isGoodUidSignature(uid, sig, master)) {
+                    ok = true;
+                    break;
                 }
             }
+            if (!ok) {
+                throw new PGPException("No signature for "+uid);
+            }
         }
-        if (!ok) {
-            throw new PGPException("Missing master self-signature");
+        if (!has_one) {
+            throw new PGPException("Need atleast one self-sig for this key.");
         }
     }
+
+    private final static boolean isGoodUidSignature
+        (String uid, PGPSignature sig, PGPPublicKey master)
+        throws PGPException, SignatureException
+    {
+        sig.init(s_provider, master);
+        if (sig.verifyCertification(uid, master)) {
+            // System.err.println("OK-SIG: "+uid+":"+sig);
+            return true;
+        }
+        return false;
+    }
+
+    private final static boolean acceptableSignature
+        (PGPSignature sig, PGPPublicKey master)
+    {
+        // Only accept positive certs.
+        if ((sig.getSignatureType() < PGPSignature.DEFAULT_CERTIFICATION) ||
+            (sig.getSignatureType() > PGPSignature.POSITIVE_CERTIFICATION)) {
+            return false;
+        }
+
+        // And must be from the master key
+        if (sig.getKeyID() != master.getKeyID()) {
+            return false;
+        }
+
+        // Signature should have a creation timestamp, and must not
+        // have expired.
+        PGPSignatureSubpacketVector sub = sig.getHashedSubPackets();
+
+        if (sub == null) { return false; }
+
+        SignatureCreationTime sigtime = (SignatureCreationTime)
+            sub.getSubpacket(SignatureSubpacketTags.CREATION_TIME);
+        if (sigtime == null) {
+            // sorry, don't trust any signature without a signed
+            // creation timestamp.
+            return false;
+        }
+
+        Date created = sigtime.getTime();
+        SignatureExpirationTime exptime = (SignatureExpirationTime)
+            sub.getSubpacket(SignatureSubpacketTags.EXPIRE_TIME);
+        Date expired = null;
+        if (exptime != null) {
+            long msec = exptime.getTime()*1000l;
+            if (msec > 0) {
+                expired = new Date(created.getTime() + msec);
+            }
+        }
+
+        // Check for reasonableness.
+        long now = System.currentTimeMillis();
+        if (created.getTime() > now) {
+            return false;
+        }
+        if ((expired != null) && (expired.getTime() < now)) {
+            return false;
+        }
+        return true;
+    }
+
 
     private final static void pipeSignedBytes
         (byte[] inbytes, OutputStream out, int pgpAlgorithm,
