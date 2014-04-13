@@ -14,6 +14,9 @@ simple Android app</a>.  Wakes up when there are new pictures and
 saves them to your <a href="https://www.snapfish.com">Snapfish
 account</a>.
 
+$asis
+<div class="clear"></div>
+
 <img src="/media/img/d264541a3e3d6706b76b364f7a0543066e31f97a.jpg"
 alt="Save My Pics screenshot" class="half"/>
 Getting pictures off my Nexus 4 into Snapfish has always been a chore,
