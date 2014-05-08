@@ -1,0 +1,183 @@
+$date
+2014-05-08
+
+$title
+SAILing through my online life
+
+Save Anything Important Locally - a rule of thumb to regain control
+over your data. Why this is useful, and documenting some things that I
+do.
+
+Recently, I've been quietly watching the evolution of the <a
+href="http://indiewebcamp.com">indiewebcamp group</a>. It's an
+eclectic collection of very smart people, and it's been fun to watch
+their projects evolve and learn from them. While a lot of their goals
+center around online identity, one of <a
+href="https://indiewebcamp.com/principles">their principles</a> that
+resonated with me is to <em>own your data</em>. It's something that I've
+been doing rather haphazardly over the years, and I realized I have a different
+take on it as well.
+
+This post then is about what it means to me, and to document a couple
+of things I do.
+
+<strong>What</strong>
+
+We only have to look at our personal email to realize two things.
+
+1. Most of us rely on an online service to store email for the long
+term.
+
+2. Email important to me is not necessarily <em>created</em> by me.
+
+The second point highlights what it means to "own your own
+data". Important content <em>also</em> arises when we communicate with
+people - through email, sharing photos, comments etc. So rather than
+thinking of it as just owning <em>my</em> data - I see it as taking
+control of data that's <em>important to me</em>.
+
+<strong>Why</strong>
+
+For most of us, data surrounding our interactions tends to stay within
+the system that facilitates such interactions. Email tends to stay
+within Gmail, photos shared with me on Facebook tends to stay within
+Facebook, and so on.
+
+You can probably imagine enough situations where this content is not
+easily available. Perhaps it's as simple as just wanting to read your
+email or look at photos when you don't have a network connection. Or
+maybe the site itself decides <a
+href="http://www.jonasblog.com/my-gmail-account-got-deleted">you can
+no longer login</a>, or <a
+href="https://indiewebcamp.com/site_deaths">is shuttered</a>.
+
+Regardless of the reason, once you recognize the importance of such
+content, you can begin to take control of it. A simple start is to
+SAIL your data - keep an independent, local copy of data that's
+important to you.
+
+It's important to realize that the primary goal is not "a backup" - in
+fact large sites are likely to do a better job at this. The goal is to
+keep content independently under your control - in whatever manner
+works best for you.
+
+<strong>How</strong>
+
+I have a relatively quiet online presence - so most of what I find
+interesting tends to be shared with me, rather than what I
+originate. I'll focus on how I manage gmail and facebook, and also
+stick with documenting what I do, since if you're reading this, you're
+almost certainly technically savvy -- and you'll probably find a
+different solution that works for you.
+
+<em>Email</em>
+
+I use <a href="http://offlineimap.org">offlineimap</a> in a cron job
+to periodically pull down emails from my gmail account to my
+Macbook. After installing it through homebrew, I created a file
+<tt>.offlineimaprc</tt> in my home directory that looks like this.
+
+$code_begin
+[general]
+accounts = GMail
+maxsyncaccounts = 1
+
+[Account GMail]
+localrepository = Local
+remoterepository = Remote
+
+[Repository Local]
+type = Maildir
+localfolders = /Users/kbs/gmail
+sep = /
+
+[Repository Remote]
+type = IMAP
+remotehost = imap.gmail.com
+remoteuser = myusername@gmail.com
+remotepass = mypassword
+ssl = yes
+maxconnections = 1
+realdelete = no
+cert_fingerprint = 22b4c96075592f0e0e20134ae008ae4a5f0177a6
+readonly = True
+#if you only want the INBOX folder
+#folderfilter = lambda foldername: foldername in ['INBOX']
+$code_end
+
+I run this in a cron job
+
+$code_begin
+15 10 * * * /usr/local/bin/offlineimap -u quiet > /dev/null 2>&1
+$code_end
+
+at 10:15am every day, which tends to be a good time when I'm ensconsed
+in a place with internet connectivity.
+
+<em>Facebook</em>
+
+My facebook setup is nothing more than a
+<a href="https://gist.github.com/kbsriram/05544b3f12a7b316c113">small bit
+of java code</a> that uses the
+<a href="https://developers.facebook.com/docs/graph-api">Facebook Graph
+API</a> to download photos posted by or tagged with specific
+people. It's not very sophisticated, but it works well enough for my
+needs.
+
+I have a directory <tt>archive/</tt> with create a file <tt>archive/fbtokens.txt</tt> that looks like
+this.
+
+$code_begin
+access_token=AAAAA....
+download=John Doe,Jane Doe
+$code_end
+
+<tt>access_token</tt> is an OAuth access token - I use one I
+pulled out from the facebook android app after logging in, because it
+has all the privileges that I need.
+
+The <tt>download</tt> property is just a comma separated list of
+people whose photos I care about. As with the gmail backup, I run it
+periodically in a cron job - and then I occasionally slideshow the
+folders.
+
+<strong>Preserving your data</strong>
+
+This can be a pretty tricky area, especially if you're hoping to still
+see all this data in a couple of decades. I'm old enough to at least
+understand some ways not to do it, so here's what I'm doing these
+days.
+
+On the data format end, I try to keep everything as uncomplicated as
+possible - at the minimum, I want to be able to go through my data
+without needing specific applications (like a particular database.)
+Simple files and text tends to survive the longest. For example,
+emails are just individual files, and the photos are just jpegs under
+directories, with metadata in json files.
+
+I use rsync to copy these folders into a couple of hard-drives, and
+every few years when I feel guilty enough to remember, I re-copy old
+folders into new hard-drives - or whatever new media might come
+about. I wish I had a better way to automate this, but I haven't found
+one that I can get onboard with.
+
+The Japanese have a highly evolved tradition of <a
+href="https://en.wikipedia.org/wiki/Ise_Grand_Shrine#Rebuilding_the_Shrine">rebuilding
+some Shinto shrines</a> every twenty years -- the Ise Grand Shrine is
+now in its 62nd iteration. So <a
+href="https://en.wikipedia.org/wiki/Digital_preservation#Refreshing">this
+technique</a> has some good precedents - let's see how it works out in
+another decade or two.
+
+I've started to keep a hard-drive at my friend's place as well, though
+I find that that I haven't updated that copy in a couple of
+years. Sigh.
+
+Finally - should emphasize that I don't have any grand principles
+against keeping data online. I very much continue to use gdrive and
+dropbox to store an extra copy of some 'high-importance' stuff - but I
+do this by encrypting a tarball of specific folders after my rsync
+backup. This ensures I also have a local copy before pushing it
+online.
+
+Happy SAILing!
