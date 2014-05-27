@@ -48,3 +48,10 @@ The code to generate the svg is pretty rudimentary, just good enough
 to get the job done. I've put it up <a
 href="https://gist.github.com/kbsriram/a55a360a3457f4d11d8d">at this gist</a> in case you feel like
 playing with it as well.
+
+If you've made it so far, here's <a
+href="/media/img/static-dependencies-huge.jpg">a very large
+(10000x10000) jpg image</a> that displays each class so you can get a
+global, though static view of the dependencies. This even larger <a
+href="/media/img/static-dependencies-huge.jpg">png version</a> might
+be suitable to print up as a poster.
