@@ -8,6 +8,6 @@ error_exit ()
 
 [ -f java/bin/st.jar ] || error_exit "bad start directory"
 
-find . -type f -name '*.html' -exec rm -f '{}' \;
+find . -name media -prune -o -type f -name '*.html' -exec rm -f '{}' \;
 java -jar java/bin/st.jar tpl txt . || error_exit "java failed"
-find . -type f -name '*.html' -print | xargs -n1 $HOME/extbuilds/bin/tidy -eq || error_exit "Bad html"
+find . -name media -prune -o -type f -name '*.html' -print | xargs -n1 $HOME/extbuilds/bin/tidy -eq || error_exit "Bad html"

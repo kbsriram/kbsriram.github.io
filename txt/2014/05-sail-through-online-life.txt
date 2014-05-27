@@ -124,7 +124,7 @@ API</a> to download photos posted by or tagged with specific
 people. It's not very sophisticated, but it works well enough for my
 needs.
 
-I have a directory <tt>archive/</tt> with create a file <tt>archive/fbtokens.txt</tt> that looks like
+I have a directory <tt>archive/</tt> and create a file <tt>archive/fbtokens.txt</tt> that looks like
 this.
 
 $code_begin

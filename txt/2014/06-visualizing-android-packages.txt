@@ -1,0 +1,50 @@
+$date
+2014-05-24
+
+$title
+Visualizing dependencies in the android framework
+
+<img
+src="/media/img/lead_initial.jpg"
+class="lead_initial" alt="overall structure"/>
+A small experiment to visualize dependencies between classes in the
+android framework. This effort generated some some neat pictures, and
+was a chance to play with svg.
+
+$asis
+<div class="clear"></div>
+
+All the classes within the <tt>android.jar</tt> file in the
+android-19 sdk are arranged in a circle and linked by a curved red
+line to the classes that use them. The size of the code in each class
+is indicated by a radial gray line.
+<a href="/media/svg/android.html"><img src="/media/img/basic.jpg"
+alt="basic screenshot" class="full"/></a>
+
+Click on the image above to view the generated svg file. The file is
+pretty large, but you can then hover over the lines to see the
+associated class, or zoom your browser into specific portions of the
+circle.
+
+Classes are sorted by their fully qualified name, so classes within
+the same package are adjacent to each other. You may notice clusters
+of tiny arcs, which represent clasess used within their own package.
+<tt>android.provider.BaseColumns</tt> is a typical example, it is
+primarily used within its own package.
+<img src="/media/img/base_columns.jpg"
+alt="android.provider.BaseColumns"/>
+
+By contrast, some classes like <tt>android.os.Parcelable</tt> are used quite extensively everywhere in the framework.
+<img src="/media/img/parcelable.jpg"
+alt="android.os.Parcelable" class="full"/>
+
+Some classes have a relatively enormous code
+size. <tt>android.view.View</tt> is one such class - in fact the code
+is large enough that it extends outside the limits of the drawing.
+<img src="/media/img/view.jpg"
+alt="android.view.View" class="full"/>
+
+The code to generate the svg is pretty rudimentary, just good enough
+to get the job done. I've put it up <a
+href="https://gist.github.com/kbsriram/a55a360a3457f4d11d8d">at this gist</a> in case you feel like
+playing with it as well.
