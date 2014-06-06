@@ -1,0 +1,138 @@
+$date
+2014-06-01
+
+$title
+Drivethrough: private android photo backups via GDrive
+
+<img
+src="/media/img/drivethrough_lead_initial.jpg"
+class="lead_initial" alt="drivethrough android screenshot"/>
+Just documenting some code I use to privately backup photos from my
+android phone to a laptop. The phone uploads photos as encrypted files
+to GDrive. The laptop downloads and decrypts new photos, then deletes
+files off GDrive. It's admittedly geeky to setup right now, but it's
+worked out quite nicely as a private, no-hassle local backup of my
+phone pics.
+
+The <a href="https://github.com/kbsriram/drivethrough">code is sitting on
+github</a> in case you feel inclined to mess about with it. If you
+just want to try it out (and you'll want to be comfortable with
+command line tools) skip the next few paragraphs of explanatory fluff
+to get to the actual nuts and bolts. Otherwise, some babble
+about how it works.
+
+When you install the code on the laptop, it generates an OpenPGP
+keypair, and stores the public key as <tt>main.pkr</tt> on your GDrive
+account.
+
+<img src="/media/img/drivethrough-diagram.png"
+alt="Drivethrough overall" class="full"/>
+
+The next step is to install the android app on whatever devices you
+wish to backup. Upon installation, each device also generates a keypair
+and uploads the public half on GDrive. The app proceeds to download the
+<tt>main.pkr</tt> file, encrypts photos against that key, and signs it
+with its device key. Finally, encrypted files are uploaded to GDrive.
+
+The app wakes up when there's a wifi connection, or there are new
+photos. In either case -- if there are unsaved photos, it does the
+same thing. That is, download the <tt>main.pkr</tt> file, encrypt,
+sign and then upload new photos. If the fingerprint of
+<tt>main.pkr</tt> changes, it stops and flags an error (so it works
+roughly like SSH -- trust on first use.) Periodically downloading the
+OpenPGP key allows me to change encryption subkeys frequently if I
+feel the need to do this.
+
+Back on the laptop side, I run a cronjob that downloads any new device
+keys, and then any encrypted files. It decrypts the files, verifies
+they are signed with the appropriate device key, and then deletes the
+file on GDrive.
+
+<strong>Using Drivethrough</strong>
+
+This is what I did on my Macbook. Since it's java code, in theory it
+should work quite similarly on other platforms; but I haven't tested
+it myself.
+
+First create a directory where you'll host your archives - let's say
+it's <tt>$HOME/phone-archive</tt>. Now download <a
+href="https://github.com/kbsriram/drivethrough/raw/master/laptop/dist/drivethrough.jar"><tt>drivethrough.jar</tt></a>
+to a convenient directory inside here, let's say
+<tt>$HOME/phone-archive/bin/drivethrough.jar</tt>.
+
+Next, you'll be setting up the app by connecting it to your GDrive
+account. Run it from a command shell as:
+
+$code_begin
+$ java -jar $HOME/phone-archive/bin setup $HOME/phone-archive/data
+$code_end
+
+This command asks it to setup your GDrive, and download the archives
+under <tt>$HOME/phone-archive/data</tt>. You will be asked to
+visit an GDrive authorization URL in your browser. Follow the
+directions in the browser, and you'll eventually get a code which
+you'll paste back in the command shell.
+
+$code_begin
+Enter code from browser: ...........
+$code_end
+
+Let it do its thing, and hopefully when it's finished that's pretty
+much it as far as setting up goes. If you want to confirm that things
+look good, you can visit <a href="https://drive.google.com">your
+GDrive page</a> where you should find a new directory called
+<tt>drivethrough</tt> with a file called <tt>main.pkr</tt> in it. This
+is the public key generated from your laptop, and your connected
+devices will encrypt against it.
+
+<img src="/media/img/drivethrough-web.jpg"
+alt="GDrive web after initial install" class="full"/>
+
+I have a couple more things in that directory -- these are device
+keys from my two connected devices. You too will find something like it
+once you install the app on your phone.
+
+The next step is to install <a
+href="https://github.com/kbsriram/drivethrough/raw/master/android/bin/CStartActivity-debug.apk">the drivethrough apk
+file</a> on your device. I'll leave you to figure out how to sideload
+it on your device - it's currently tested only against
+<tt>android-19</tt> or above.
+
+<img src="/media/img/drivethrough-android.jpg"
+alt="Drivethrough app screenshot" class="half"/>
+Just start it up, it should guide you through a couple of
+authorization screens that permits it to access your GDrive. Once
+you've authorized it, you can more or less forget about it. It'll just
+wake up as needed, and upload your photos whenever wifi is available.
+If you have a ton of photos on your phone (I had about 3Gb of photos
+and videos) it can take hours before all your photos are
+uploaded. It's almost entirely dependent on your wifi speed, so you
+might want to wait on installing it until you can leave your phone
+plugged in overnight next to some fast wifi connection.
+
+$asis
+<div class="clear"></div>
+
+Back on my laptop - I just have a cron job that runs once a day that
+looks like this.
+
+$code_begin
+$ crontab -l | grep drivethrough
+00 11 * * * /usr/bin/java -jar $HOME/phone-archive/bin/drivethrough.jar pull $HOME/phone-archive/data
+$code_end
+
+All this does is to pull down any new files, and copy them under the <tt>$HOME/phone-archive/data</tt> directory. Here's how it looks like at the moment.
+
+<img src="/media/img/drivethrough-local.jpg"
+alt="Drivethrough on laptop" class="full"/>
+
+You'll notice that the files are stored under the device fingerprint
+key, and that the folder structure mirrors the actual structure of the
+data on the device.
+
+Once setup, this has been a pretty painless way to have photos taken
+from my phone quietly arrive into my laptop. As a little bonus, it
+does it without sacrificing the privacy of the photos; I don't really
+want Google auto-indexing my photos. When I backup my laptop - these
+photos also get backed up along with everything else; so that also
+seems to work out well in case I lose or brick my phone.
