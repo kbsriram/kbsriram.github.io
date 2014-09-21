@@ -23,7 +23,7 @@ fingerprint on profile sites linked from the key.
 
 Is this a fully reliable proof of identity? Not really - for example
 someone could have hacked into one of my social media accounts and
-alterted it to a different fingerprint. But it provides a comparable
+altered it to a different fingerprint. But it provides a comparable
 degree of assurance a service like <a
 href="https://keybase.io">keybase</a> offers -- i.e. a person who
 controls the key was able to publish to that profile site.
