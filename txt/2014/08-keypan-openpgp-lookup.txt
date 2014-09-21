@@ -1,0 +1,42 @@
+$date
+2014-09-20
+
+$title
+Keypanning: sifting for OpenPGP keys with social profiles
+
+<img
+src="/media/img/keypan_lead_initial.jpg"
+class="lead_initial" alt="Keypan screenshot"/>
+How do you find the PGP key for someone who you only know via a
+Twitter, G+ or Github profile? Add your profile url as a user id on
+your key, and publish a fingerprint on your profile site.
+
+For example, I've published mine on
+<a href="https://plus.google.com/+KBSriram/about">Google+</a>, on
+<a href="https://gist.github.com/kbsriram/c05dca103a252ac0d6ac">Github</a>
+and on <a href="https://twitter.com/kbsriram">Twitter</a>.
+
+Clients can now find your keys in the distributed keyservers (eg: this
+query finds <a
+href="https://pgp.mit.edu/pks/lookup?op=get&amp;search=github.com%2Fkbsriram">keys
+that match my github profile</a>) and select ones that have a matching
+fingerprint on profile sites linked from the key.
+
+This provides a comparable degree of assurance a service like <a
+href="https://keybase.io">keybase</a> offers -- namely, a person who
+controls the key was able to publish to that profile site. But it
+doesn't need the complication of an additional service, as clients can
+directly check the profile sites after obtaining candidate keys.
+
+I've <a href="https://github.com/kbsriram/keypan">implemented a sample
+client</a> which does just this. It has a CLI as well as a
+nicer-looking web interface from a locally runnable web server.
+
+<img alt="keypan web" src="/media/img/keypan_web.jpg" class="centered"/>
+
+Given a profile URL, it searches and then automatically looks for
+matching fingerprints in profiles linked from the key.  <a
+href="https://github.com/kbsriram/keypan">The github page</a> has more
+details as well as instructions for <a
+href="https://github.com/kbsriram/keypan#making-your-keys-visible-to-keypan">publishing
+your keys with <tt>gpg</tt></a> using this technique.
