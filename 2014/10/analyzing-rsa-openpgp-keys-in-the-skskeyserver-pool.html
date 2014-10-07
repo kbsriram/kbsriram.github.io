@@ -81,10 +81,9 @@ primes.</p>
 two 1024 bit primes. To find such a prime, it generates a random 1024
 bit number with its <a
 href="http://git.gnupg.org/cgi-bin/gitweb.cgi?p=libgcrypt.git;a=blob;f=cipher/primegen.c;h=14a5ccfe4caa1519de493a2298642cba4bd3e0d9;hb=de0ccd4dce7ec185a678d78878d4538dd609ca0f#l780">first
-<strong>two</strong> bits set to 1</a>, until this number passes a
-number of primality tests. Why does it set the second bit to 1?
-Because this guarantees that the product will never be smaller than
-2048 bits.</p>
+two bits set to 1</a>, until this number passes a number of primality
+tests. Why does it set the second bit to 1?  Because this guarantees
+that the product will never be smaller than 2048 bits.</p>
 <p >A bit of algebra shows why -- to generate a 2n bit composite number
 out of two n-bit primes, gnupg picks primes that that are at least
 2^(n-1) + 2^(n-2).</p>
