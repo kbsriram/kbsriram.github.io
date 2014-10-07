@@ -8,19 +8,20 @@ Out of curiosity, I ran two tests on the publicly available RSA keys
 within the sks keyserver system. First, can it be factored by the
 first 1000 primes? Second, do any pairs of keys share a common factor?
 
-The results: within the roughly 1.9 million RSA moduli available as a
-key or subkey
+The results -- within the roughly <strong>1.9 million</strong> RSA
+moduli available as a key or subkey:
 
-1. Only one pair shared a common factor - these are
+1. <strong>Only one pair shared a common factor</strong> - these are
    two v3 keys with 1024-bit moduli (and have also expired quite a few
    years back.)
 
-2. There were 41 valid keys with an RSA subkey
-   divisible by a small prime. However, the remaining number is still
-   composite, so perhaps it is some glitch in the prime-generation
-   component of the code.
+2. There were <strong>41 valid keys with an RSA subkey divisible by a
+   small prime</strong>. However, the remaining number is
+   <strong>still composite</strong>, so perhaps it is some glitch in
+   the prime-generation component of the code.
 
-<strong>How I ran the tests.</strong>
+$asis
+<h2>How I ran the tests</h2>
 
 I downloaded one of the <a
 href="https://sks.disunitedstates.com/dump/">daily database dumps</a>
@@ -57,7 +58,8 @@ the remaining 1,901,662 moduli. It found one pair of moduli with a
 shared factor - it belongs to a pair of 1024-bit v3 keys that have
 long since expired.
 
-<strong>Miscellania.</strong>
+$asis
+<h2>Miscellania</h2>
 
 If you were curious, this is the number of moduli of different lengths
 that I found within keys/subkeys.
@@ -83,18 +85,19 @@ distributions. This turns out to be a slightly nasty <a
 href="http://www2.maths.bris.ac.uk/~macpd/georgiou/ProductRVs%20revised.pdf">piecewise
 continuous log function</a> that looks like a saw-tooth.
 
-But the sawtooth doesn't begin at the left - instead there's a small
-section that seems uniformly distributed. I believe this is the result
+But the sawtooth doesn't begin all the way to the left - instead there
+is a flat section with very few moduli. I believe this is the result
 of the way gnupg (and perhaps other widely used PGP tools) generate
 primes.
 
 If you ask gnupg to generate a 2048 bit modulus, it starts by finding
-two 1024 bit primes. To find such a prime, it generates a random 1024
-bit number with its <a
+two 1024 bit primes. To find such a prime, it starts to generate
+random 1024 bit numbers with their <a
 href="http://git.gnupg.org/cgi-bin/gitweb.cgi?p=libgcrypt.git;a=blob;f=cipher/primegen.c;h=14a5ccfe4caa1519de493a2298642cba4bd3e0d9;hb=de0ccd4dce7ec185a678d78878d4538dd609ca0f#l780">first
-two bits set to 1</a>, until this number passes a number of primality
-tests. Why does it set the second bit to 1?  Because this guarantees
-that the product will never be smaller than 2048 bits.
+two bits set to 1</a>, until one such number passes a number of
+primality tests. Why does it always set their first two bits to 1?
+Because this guarantees their product will never be smaller than 2048
+bits.
 
 A bit of algebra shows why -- to generate a 2n bit composite number
 out of two n-bit primes, gnupg picks primes that that are at least
