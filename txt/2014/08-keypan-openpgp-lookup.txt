@@ -44,4 +44,4 @@ matching fingerprints in profiles linked from the key.  <a
 href="https://github.com/kbsriram/keypan">The github page</a> has more
 details as well as instructions for <a
 href="https://github.com/kbsriram/keypan#making-your-keys-visible-to-keypan">publishing
-your keys with <tt>gpg</tt></a> using this technique.
+your keys with <code>gpg</code></a> using this technique.

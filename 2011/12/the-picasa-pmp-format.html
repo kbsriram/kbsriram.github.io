@@ -21,26 +21,26 @@ do let me know if you have more information about this file format.</p>
 <p >The database files are found under</p>
 <pre >$HOME/Library/Application Support/Google/Picasa3/db3</pre>
 <p >on the Macs, and there are equivalent locations on other
-platforms. Under here are a set of files with a <tt>.pmp</tt> suffix,
+platforms. Under here are a set of files with a <code>.pmp</code> suffix,
 which are the database files.</p>
-<p >[BTW: The files with the <tt>.db</tt> suffix just hold thumbnails of
+<p >[BTW: The files with the <code>.db</code> suffix just hold thumbnails of
 various groups of images. They are in the standard windows thumbs.db
 format, and <a href="http://vinetto.sourceforge.net/docs.html">here's
 a link</a> that has more useful information about this format.]</p>
-<p >Each <tt>.pmp</tt> file represents a field in a table, and the table is
+<p >Each <code>.pmp</code> file represents a field in a table, and the table is
 identified by a common prefix as follows:</p>
 <pre >$ ls -1 catdata_*
 catdata_0
 catdata_catpri.pmp
 catdata_name.pmp
 catdata_state.pmp</pre>
-<p >The file with the <tt>_0</tt> suffix is a marker file to identify the
-table, and each <tt>.pmp</tt> file sharing that prefix is a field for
-that table. For instance, <tt>catdata_state.pmp</tt> contains records
-for the field <tt>state</tt> in the table <tt>catdata</tt>, and so
+<p >The file with the <code>_0</code> suffix is a marker file to identify the
+table, and each <code>.pmp</code> file sharing that prefix is a field for
+that table. For instance, <code>catdata_state.pmp</code> contains records
+for the field <code>state</code> in the table <code>catdata</code>, and so
 forth.</p>
-<p >All files start with the four magic bytes: <tt>0xcd 0xcc 0xcc 0x3f</tt></p>
-<p >The marker files (ie, files that end in <tt>_0</tt>) only contain the
+<p >All files start with the four magic bytes: <code>0xcd 0xcc 0xcc 0x3f</code></p>
+<p >The marker files (ie, files that end in <code>_0</code>) only contain the
 magic bytes.</p>
 <p >The pmp file is in little-endian format rather than the usual network
 byte/big-endian format.</p>
@@ -75,9 +75,9 @@ currently prevents dates older than Dec 31, 1903 from being used.</p>
 <p >0x6: null-terminated string. (possibly csv strings?)</p>
 <p >0x7: unsigned int, 4 bytes.</p>
 <p >The entities are indexed by their record number in each file. Ie,
-fetching the 7273'rd record in all files named <tt>imagedata_*pmp</tt>
+fetching the 7273'rd record in all files named <code>imagedata_*pmp</code>
 gives information about the fields for entity #7273 in the
-<tt>imagedata</tt> table.</p>
+<code>imagedata</code> table.</p>
 <p >You might expect every "field file" for a given table to contain the
 same number of records, but this is not always the case. I expect the
 underlying library returns the equivalent of undefined when fetching

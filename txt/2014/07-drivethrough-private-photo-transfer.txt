@@ -22,7 +22,7 @@ to get to the actual nuts and bolts. Otherwise, some babble
 about how it works.
 
 When you install the code on the laptop, it generates an OpenPGP
-keypair, and stores the public key as <tt>main.pkr</tt> on your GDrive
+keypair, and stores the public key as <code>main.pkr</code> on your GDrive
 account.
 
 <img src="/media/img/drivethrough-diagram.png"
@@ -31,14 +31,14 @@ alt="Drivethrough overall" class="full"/>
 The next step is to install the android app on whatever devices you
 wish to backup. Upon installation, each device also generates a keypair
 and uploads the public half on GDrive. The app proceeds to download the
-<tt>main.pkr</tt> file, encrypts photos against that key, and signs it
+<code>main.pkr</code> file, encrypts photos against that key, and signs it
 with its device key. Finally, encrypted files are uploaded to GDrive.
 
 The app wakes up when there's a wifi connection, or there are new
 photos. In either case -- if there are unsaved photos, it does the
-same thing. That is, download the <tt>main.pkr</tt> file, encrypt,
+same thing. That is, download the <code>main.pkr</code> file, encrypt,
 sign and then upload new photos. If the fingerprint of
-<tt>main.pkr</tt> changes, it stops and flags an error (so it works
+<code>main.pkr</code> changes, it stops and flags an error (so it works
 roughly like SSH -- trust on first use.) Periodically downloading the
 OpenPGP key allows me to change encryption subkeys frequently if I
 feel the need to do this.
@@ -55,10 +55,10 @@ should work quite similarly on other platforms; but I haven't tested
 it myself.
 
 First create a directory where you'll host your archives - let's say
-it's <tt>$HOME/phone-archive</tt>. Now download <a
-href="https://github.com/kbsriram/drivethrough/raw/master/laptop/dist/drivethrough.jar"><tt>drivethrough.jar</tt></a>
+it's <code>$HOME/phone-archive</code>. Now download <a
+href="https://github.com/kbsriram/drivethrough/raw/master/laptop/dist/drivethrough.jar"><code>drivethrough.jar</code></a>
 to a convenient directory inside here, let's say
-<tt>$HOME/phone-archive/bin/drivethrough.jar</tt>.
+<code>$HOME/phone-archive/bin/drivethrough.jar</code>.
 
 Next, you'll be setting up the app by connecting it to your GDrive
 account. Run it from a command shell as:
@@ -68,7 +68,7 @@ $ java -jar $HOME/phone-archive/bin/drivethrough.jar setup $HOME/phone-archive/d
 $code_end
 
 This command asks it to setup your GDrive, and download the archives
-under <tt>$HOME/phone-archive/data</tt>. You will be asked to visit a
+under <code>$HOME/phone-archive/data</code>. You will be asked to visit a
 GDrive authorization URL in your browser. Follow the directions in the
 browser, and you'll eventually get a code which you'll paste back in
 the command shell.
@@ -81,7 +81,7 @@ Let it do its thing, and hopefully when it's finished that's pretty
 much it as far as setting up goes. If you want to confirm that things
 look good, you can visit <a href="https://drive.google.com">your
 GDrive page</a> where you should find a new directory called
-<tt>drivethrough</tt> with a file called <tt>main.pkr</tt> in it. This
+<code>drivethrough</code> with a file called <code>main.pkr</code> in it. This
 is the public key generated from your laptop, and your connected
 devices will encrypt against it.
 
@@ -96,7 +96,7 @@ The next step is to install <a
 href="https://github.com/kbsriram/drivethrough/raw/master/android/bin/CStartActivity-debug.apk">the drivethrough apk
 file</a> on your device. I'll leave you to figure out how to sideload
 it on your device - it's currently tested only against
-<tt>android-19</tt> or above.
+<code>android-19</code> or above.
 
 <img src="/media/img/drivethrough-android.jpg"
 alt="Drivethrough app screenshot" class="half"/>
@@ -121,7 +121,7 @@ $ crontab -l | grep drivethrough
 00 11 * * * /usr/bin/java -jar $HOME/phone-archive/bin/drivethrough.jar pull $HOME/phone-archive/data
 $code_end
 
-All this does is to pull down any new files, and copy them under the <tt>$HOME/phone-archive/data</tt> directory. Here's how it looks like at the moment.
+All this does is to pull down any new files, and copy them under the <code>$HOME/phone-archive/data</code> directory. Here's how it looks like at the moment.
 
 <img src="/media/img/drivethrough-local.jpg"
 alt="Drivethrough on laptop" class="full"/>

@@ -10,4 +10,4 @@ error_exit ()
 
 find . -name media -prune -o -type f -name '*.html' -exec rm -f '{}' \;
 java -jar java/bin/st.jar tpl txt . || error_exit "java failed"
-find . -name media -prune -o -type f -name '*.html' -print | xargs -n1 $HOME/extbuilds/bin/tidy -eq || error_exit "Bad html"
+find . -name media -prune -o -type f -name '*.html' -print | xargs -n1 tidy -eq || error_exit "Bad html"

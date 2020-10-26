@@ -18,7 +18,7 @@
 <p >It also assumes that you're reasonably comfortable with the command-line, and can deal with a couple of thrown-together scripts. [Fortunately, they are small so I hope they will at least be a starting point.]</p>
 <p >Here's how I assemble my epub. First, I create a directory that will hold all the content I want in the epub.</p>
 <pre >$ mkdir macintosh_stories</pre>
-<p >Next, I create text files -- one for each chapter, to contain the text. So (say) I create one file called <tt>macintosh_stories/01.txt</tt> that contains this:</p>
+<p >Next, I create text files -- one for each chapter, to contain the text. So (say) I create one file called <code>macintosh_stories/01.txt</code> that contains this:</p>
 <pre >#Alice
 
 Even though Bruce Daniels was the manager of the Lisa software team,
@@ -26,19 +26,19 @@ he was very supportive of the Mac project. He had written the
 mouse-based text editor that we were using on the Lisa to write all of
 our code, and he even transferred to the Mac team as a mere programmer
 ...</pre>
-<p >You can mark (2 levels) of headlines with the <tt>#</tt> character. One <tt>#</tt> is the largest headline, and <tt>##</tt> gives a subheading. There isn't anything much else it does, though you can notate italics by <tt>_italics_</tt>.</p>
+<p >You can mark (2 levels) of headlines with the <code>#</code> character. One <code>#</code> is the largest headline, and <code>##</code> gives a subheading. There isn't anything much else it does, though you can notate italics by <code>_italics_</code>.</p>
 <p >This is sufficient to create the first epub -- and you run it as</p>
 <pre >$ gen.sh macintosh_stories "Macintosh Stories" "Andy Hertzfeld"</pre>
-<p >Let it do its thing, and your epub will be left under <tt>macintosh_stories/out.epub</tt></p>
-<p >To create more chapters -- keep adding more txt files. The sequence of chapters are strictly determined by the filename of the text file -- so I usually create text files like <tt>01_xxx.txt</tt>, <tt>02_xxx.txt</tt> and so on.</p>
+<p >Let it do its thing, and your epub will be left under <code>macintosh_stories/out.epub</code></p>
+<p >To create more chapters -- keep adding more txt files. The sequence of chapters are strictly determined by the filename of the text file -- so I usually create text files like <code>01_xxx.txt</code>, <code>02_xxx.txt</code> and so on.</p>
 <p >To add a cover and other media, first create a directory called media</p>
 <pre >$ mkdir macintosh_stories/media</pre>
-<p >If you then create a file called <tt>macintosh_stories/media/cover.jpg</tt>, the scripts will add the cover to the epub.</p>
+<p >If you then create a file called <code>macintosh_stories/media/cover.jpg</code>, the scripts will add the cover to the epub.</p>
 <p >To add images into the file, first place them into the media
 directory. For example, in the above story -- there's an image of the
 packaging, which I've saved as
-<tt>macintosh_stories/media/alice_packaging.jpg</tt></p>
-<p >From within <tt>01.txt</tt>, I refer to it as:</p>
+<code>macintosh_stories/media/alice_packaging.jpg</code></p>
+<p >From within <code>01.txt</code>, I refer to it as:</p>
 <pre >...
 disk was enclosed in a small cardboard box designed to look like a
 finely printed, old fashioned book, complete with an elaborate woodcut

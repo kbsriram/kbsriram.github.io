@@ -16,7 +16,7 @@ $code_begin
 $ mkdir macintosh_stories
 $code_end
 
-Next, I create text files -- one for each chapter, to contain the text. So (say) I create one file called <tt>macintosh_stories/01.txt</tt> that contains this:
+Next, I create text files -- one for each chapter, to contain the text. So (say) I create one file called <code>macintosh_stories/01.txt</code> that contains this:
 
 $code_begin
 #Alice
@@ -28,7 +28,7 @@ our code, and he even transferred to the Mac team as a mere programmer
 ...
 $code_end
 
-You can mark (2 levels) of headlines with the <tt>#</tt> character. One <tt>#</tt> is the largest headline, and <tt>##</tt> gives a subheading. There isn't anything much else it does, though you can notate italics by <tt>_italics_</tt>.
+You can mark (2 levels) of headlines with the <code>#</code> character. One <code>#</code> is the largest headline, and <code>##</code> gives a subheading. There isn't anything much else it does, though you can notate italics by <code>_italics_</code>.
 
 This is sufficient to create the first epub -- and you run it as
 
@@ -36,9 +36,9 @@ $code_begin
 $ gen.sh macintosh_stories "Macintosh Stories" "Andy Hertzfeld"
 $code_end
 
-Let it do its thing, and your epub will be left under <tt>macintosh_stories/out.epub</tt>
+Let it do its thing, and your epub will be left under <code>macintosh_stories/out.epub</code>
 
-To create more chapters -- keep adding more txt files. The sequence of chapters are strictly determined by the filename of the text file -- so I usually create text files like <tt>01_xxx.txt</tt>, <tt>02_xxx.txt</tt> and so on.
+To create more chapters -- keep adding more txt files. The sequence of chapters are strictly determined by the filename of the text file -- so I usually create text files like <code>01_xxx.txt</code>, <code>02_xxx.txt</code> and so on.
 
 To add a cover and other media, first create a directory called media
 
@@ -46,14 +46,14 @@ $code_begin
 $ mkdir macintosh_stories/media
 $code_end
 
-If you then create a file called <tt>macintosh_stories/media/cover.jpg</tt>, the scripts will add the cover to the epub.
+If you then create a file called <code>macintosh_stories/media/cover.jpg</code>, the scripts will add the cover to the epub.
 
 To add images into the file, first place them into the media
 directory. For example, in the above story -- there's an image of the
 packaging, which I've saved as
-<tt>macintosh_stories/media/alice_packaging.jpg</tt>
+<code>macintosh_stories/media/alice_packaging.jpg</code>
 
-From within <tt>01.txt</tt>, I refer to it as:
+From within <code>01.txt</code>, I refer to it as:
 
 $code_begin
 ...

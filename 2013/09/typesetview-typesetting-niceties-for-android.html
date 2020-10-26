@@ -50,9 +50,9 @@ explicitly, rather than TextView's unintuitive spacing "multipliers"
 and "adders". If you want to set text at 16/18dp - you just set
 typeSize and typeLeading to 16dp and 18dp respectively.</p>
 <p >Third, you can directly specify font families -- including fonts you
-include under your <tt>assets/</tt> folder -- directly from your XML.</p>
+include under your <code>assets/</code> folder -- directly from your XML.</p>
 <p ><strong>Using TypesetView</strong></p>
-<p >Clone the TypesetView repository, and add <tt>typesetview-library</tt>
+<p >Clone the TypesetView repository, and add <code>typesetview-library</code>
 as a library project. To add a TypesetView within your layout, you
 might do something like</p>
 <pre >&#60;ScrollView
@@ -68,37 +68,37 @@ might do something like</p>
     typeset:typeSize="12sp"/&#62;
 &#60;/ScrollView&#62;</pre>
 <p >Notice that you should use
-<tt>http://schemas.android.com/apk/res-auto</tt> to refer to the
+<code>http://schemas.android.com/apk/res-auto</code> to refer to the
 attributes that are specific to TypesetView.</p>
 <p >Here are the TypesetView specific attributes you can specify.</p>
-<p ><tt>typeText</tt> is a String, the text to display.</p>
-<p ><tt>typeColor</tt> is a Color to use for the text.</p>
-<p ><tt>typeFontFamily</tt> is a String, naming the font to use. There are
-three pre-defined names, <tt>sans-serif</tt>, <tt>serif</tt> and
-<tt>monospace</tt>, which will use the appropriate system provided
-fonts. If you prefix the name with the magic string <tt>assets/</tt>
--- for example -- <tt>assets/Roboto-Slab.ttf</tt> -- it will look for
-a font file at that location under your applications <tt>assets/</tt>
+<p ><code>typeText</code> is a String, the text to display.</p>
+<p ><code>typeColor</code> is a Color to use for the text.</p>
+<p ><code>typeFontFamily</code> is a String, naming the font to use. There are
+three pre-defined names, <code>sans-serif</code>, <code>serif</code> and
+<code>monospace</code>, which will use the appropriate system provided
+fonts. If you prefix the name with the magic string <code>assets/</code>
+-- for example -- <code>assets/Roboto-Slab.ttf</code> -- it will look for
+a font file at that location under your applications <code>assets/</code>
 directory. In all other cases, it will ask the system to create the
 font using the provided name.</p>
-<p ><tt>typeSize</tt> is a dimension for the text size.</p>
-<p ><tt>typeLeading</tt> is a dimension for the leading (ie. the distance
+<p ><code>typeSize</code> is a dimension for the text size.</p>
+<p ><code>typeLeading</code> is a dimension for the leading (ie. the distance
 between baselines of text.</p>
-<p ><tt>typeGutterWidth</tt> is a dimension for the space between columns
+<p ><code>typeGutterWidth</code> is a dimension for the space between columns
 of text.</p>
-<p ><tt>typeMaximumLineStretch</tt> is a dimension that controls the
+<p ><code>typeMaximumLineStretch</code> is a dimension that controls the
 maximum amount a line is permitted to expand. By default, it is equal
 to the leading.</p>
-<p ><tt>typeMaximumGlueExpansionRatio</tt> is a float and must be at least
+<p ><code>typeMaximumGlueExpansionRatio</code> is a float and must be at least
 1. Spaces between words are not allowed to expand larger than this
 ratio. By default, it is 1.22</p>
-<p ><tt>typeColumnWidth</tt> is a dimension. Specify this to set a minimum
+<p ><code>typeColumnWidth</code> is a dimension. Specify this to set a minimum
 column size, and TypesetView will automatically add columns as
 needed. If you specify this, you cannot also specify
-<tt>typeColumnCount</tt>.</p>
-<p ><tt>typeColumnCount</tt> is an integer greater than 0. Specify this to
+<code>typeColumnCount</code>.</p>
+<p ><code>typeColumnCount</code> is an integer greater than 0. Specify this to
 set exactly this many columns, regardless of the width of the view. If
-you specify this, you cannot also specify <tt>typeColumnWidth</tt>.</p>
+you specify this, you cannot also specify <code>typeColumnWidth</code>.</p>
 <p >You can programatically control margins by implementing the
 TypesetView.MarginPosition interface. Please look at the provided
 examples for further guidance on using this interface. Good luck and

@@ -59,11 +59,11 @@ and "adders". If you want to set text at 16/18dp - you just set
 typeSize and typeLeading to 16dp and 18dp respectively.
 
 Third, you can directly specify font families -- including fonts you
-include under your <tt>assets/</tt> folder -- directly from your XML.
+include under your <code>assets/</code> folder -- directly from your XML.
 
 <strong>Using TypesetView</strong>
 
-Clone the TypesetView repository, and add <tt>typesetview-library</tt>
+Clone the TypesetView repository, and add <code>typesetview-library</code>
 as a library project. To add a TypesetView within your layout, you
 might do something like
 
@@ -83,48 +83,48 @@ $code_begin
 $code_end
 
 Notice that you should use
-<tt>http://schemas.android.com/apk/res-auto</tt> to refer to the
+<code>http://schemas.android.com/apk/res-auto</code> to refer to the
 attributes that are specific to TypesetView.
 
 Here are the TypesetView specific attributes you can specify.
 
-<tt>typeText</tt> is a String, the text to display.
+<code>typeText</code> is a String, the text to display.
 
-<tt>typeColor</tt> is a Color to use for the text.
+<code>typeColor</code> is a Color to use for the text.
 
-<tt>typeFontFamily</tt> is a String, naming the font to use. There are
-three pre-defined names, <tt>sans-serif</tt>, <tt>serif</tt> and
-<tt>monospace</tt>, which will use the appropriate system provided
-fonts. If you prefix the name with the magic string <tt>assets/</tt>
--- for example -- <tt>assets/Roboto-Slab.ttf</tt> -- it will look for
-a font file at that location under your applications <tt>assets/</tt>
+<code>typeFontFamily</code> is a String, naming the font to use. There are
+three pre-defined names, <code>sans-serif</code>, <code>serif</code> and
+<code>monospace</code>, which will use the appropriate system provided
+fonts. If you prefix the name with the magic string <code>assets/</code>
+-- for example -- <code>assets/Roboto-Slab.ttf</code> -- it will look for
+a font file at that location under your applications <code>assets/</code>
 directory. In all other cases, it will ask the system to create the
 font using the provided name.
 
-<tt>typeSize</tt> is a dimension for the text size.
+<code>typeSize</code> is a dimension for the text size.
 
-<tt>typeLeading</tt> is a dimension for the leading (ie. the distance
+<code>typeLeading</code> is a dimension for the leading (ie. the distance
 between baselines of text.
 
-<tt>typeGutterWidth</tt> is a dimension for the space between columns
+<code>typeGutterWidth</code> is a dimension for the space between columns
 of text.
 
-<tt>typeMaximumLineStretch</tt> is a dimension that controls the
+<code>typeMaximumLineStretch</code> is a dimension that controls the
 maximum amount a line is permitted to expand. By default, it is equal
 to the leading.
 
-<tt>typeMaximumGlueExpansionRatio</tt> is a float and must be at least
+<code>typeMaximumGlueExpansionRatio</code> is a float and must be at least
 1. Spaces between words are not allowed to expand larger than this
 ratio. By default, it is 1.22
 
-<tt>typeColumnWidth</tt> is a dimension. Specify this to set a minimum
+<code>typeColumnWidth</code> is a dimension. Specify this to set a minimum
 column size, and TypesetView will automatically add columns as
 needed. If you specify this, you cannot also specify
-<tt>typeColumnCount</tt>.
+<code>typeColumnCount</code>.
 
-<tt>typeColumnCount</tt> is an integer greater than 0. Specify this to
+<code>typeColumnCount</code> is an integer greater than 0. Specify this to
 set exactly this many columns, regardless of the width of the view. If
-you specify this, you cannot also specify <tt>typeColumnWidth</tt>.
+you specify this, you cannot also specify <code>typeColumnWidth</code>.
 
 You can programatically control margins by implementing the
 TypesetView.MarginPosition interface. Please look at the provided

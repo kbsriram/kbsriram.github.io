@@ -23,7 +23,7 @@ outline of how it works.
 There are three points of interest.
 
 1. Critical code runs only within a Google signed app (eg: the
-<tt>com.google.android.gms/.auth.GetToken</tt> service.)
+<code>com.google.android.gms/.auth.GetToken</code> service.)
 
 2. This service <strong>approves apps locally</strong>, and obtains
 access tokens using a locally stored master token. It effectively
@@ -40,7 +40,7 @@ code. It instead forwards calls to services and activities running
 within a separately installed app ("Google Play Services".)
 
 Here are some interesting bits of the manifest file for
-<tt>com.google.android.gms</tt> (the "Google Play services" app) so
+<code>com.google.android.gms</code> (the "Google Play services" app) so
 you get a feel for how it is set up.
 
 $code_begin
@@ -63,8 +63,8 @@ $code_end
 As an app writer, you typically call <a
 href="http://developer.android.com/reference/com/google/android/gms/auth/GoogleAuthUtil.html#getToken(android.content.Context,%20java.lang.String,%20java.lang.String)">GoogleAuthUtil.getToken()</a>
 from your application. The Play Services library first verifies that
-the required Google apps (<tt>com.android.vending</tt> and
-<tt>com.google.android.gms</tt>) are installed, and also that they have an
+the required Google apps (<code>com.android.vending</code> and
+<code>com.google.android.gms</code>) are installed, and also that they have an
 acceptable version and signature. The acceptable version numbers and
 signature are embedded directly within the library. Your requested
 OAuth scope is passed to the service, and now we're running inside the
@@ -73,7 +73,7 @@ trusted Play Services app.
 Things start to get interesting within the get-token service.
 
 This service first retrieves the app package name and signature of the
-caller. This pair <tt>(caller_package_name,caller_signature)</tt> is
+caller. This pair <code>(caller_package_name,caller_signature)</code> is
 used to identify the caller. This mutual identification/verification
 by the service and the calling library takes place right at the
 outset; and presumably makes it more difficult for either the caller
@@ -109,7 +109,7 @@ scope.
 
 The get-token service does all this using what I call a <em>master
 token</em> that it obtains from an undocumented authentication
-endpoint at <tt>https://android.clients.google.com/auth</tt>. Here's
+endpoint at <code>https://android.clients.google.com/auth</code>. Here's
 how it works.
 
 When you first add an account to the device (say during device setup)
@@ -160,8 +160,8 @@ The master token is stored on the device using the <a
 href="http://developer.android.com/reference/android/accounts/AccountManager.html">AccountManager</a>. You
 should be aware that in most device configurations, AccountManager
 stores this token in an unencrypted sqlite database
-(<tt>accounts.db</tt> - usually somewhere under
-<tt>/data/system</tt>.) Protection is primarily through the basic
+(<code>accounts.db</code> - usually somewhere under
+<code>/data/system</code>.) Protection is primarily through the basic
 linux file-system access controls - the directories are accessible
 only to system processes.
 
@@ -211,7 +211,7 @@ issueAdvice=auto
 services=hist,mail,lh2,talk,oz
 </pre>
 
-Indeed, all it takes is to add the <tt>has_permission=1</tt> flag to a
+Indeed, all it takes is to add the <code>has_permission=1</code> flag to a
 request containing the master token, and down comes an access token
 for the desired scope. I also believe this permission is automatically
 added if the service notices that the requestor signature is the same
@@ -219,7 +219,7 @@ as the google app signature; which is in fact the SHA value you see
 above.
 
 What happens when you request a token from your own app via
-<tt>GoogleUtils.getToken()</tt> for the <tt>userinfo.profile</tt> scope?
+<code>GoogleUtils.getToken()</code> for the <code>userinfo.profile</code> scope?
 
 $asis
 <pre>
@@ -245,8 +245,8 @@ service:                       oauth2:https://www.googleapis.com/auth/userinfo.p
 Token:                         1/zMASTERTOKEN</strong>
 </pre>
 
-Note the absence of the <tt>has_permission=1</tt> flag, and that the
-<tt>client_sig</tt> is now the signature of the calling app.
+Note the absence of the <code>has_permission=1</code> flag, and that the
+<code>client_sig</code> is now the signature of the calling app.
 
 The response is:
 
@@ -258,24 +258,24 @@ nguage%2C+and+timezone%0A
 ConsentDataBase64=...
 $code_end
 
-The user-interface is controlled by the <tt>issueAdvice</tt> flag in
+The user-interface is controlled by the <code>issueAdvice</code> flag in
 the response. Automatically approved apps get the
-<tt>issueAdvice=auto</tt> flag and an access
-token. <tt>issueAdvice=consent</tt> causes the service to return an
+<code>issueAdvice=auto</code> flag and an access
+token. <code>issueAdvice=consent</code> causes the service to return an
 Intent that if launched, shows a suitable consent dialog. (The Play
 Services client library bundles this Intent into a <a
 href="https://developer.android.com/reference/com/google/android/gms/auth/UserRecoverableAuthException.html">UserRecoverableAuthException</a>.)
 
 What happens when you approve a consent dialog? Nothing much - the
-service merely adds the <tt>has_permission=1</tt> flag to a similar
+service merely adds the <code>has_permission=1</code> flag to a similar
 request and gets back an access token. It really can create access
 tokens for any and all scopes.
 
 By the way - this also indicates how the <a
 href="http://android-developers.blogspot.com/2013/01/verifying-back-end-calls-from-android.html">verified
 app call mechanism</a> likely works. If you specify a
-<tt>audience:server:client_id</tt> scope, the token service passes it
-as usual with the <tt>(caller_package,caller_signature)</tt> pair to
+<code>audience:server:client_id</code> scope, the token service passes it
+as usual with the <code>(caller_package,caller_signature)</code> pair to
 the server. The server checks if this matches the information you
 separately registered for that app, and returns a JSON Web Token
 asserting this fact.
