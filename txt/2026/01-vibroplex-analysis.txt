@@ -1,0 +1,15 @@
+$date
+2026-01-01
+
+$title
+Vibroplex - understanding its mechanical oscillator
+
+<a href="https://kbsriram.github.io/vibroplex-bug-analysis/index.html">
+   <img
+   src="https://kbsriram.github.io/vibroplex-bug-analysis/dit_paddle.jpg"
+   class="lead_initial"
+   alt="Vibroplex patent"/>
+</a>
+For the ham radio operators into vintage CW keyers - I went down a
+rabbithole into the surprisingly nuanced
+<a href="https://kbsriram.github.io/vibroplex-bug-analysis/index.html">dynamics of a Vibroplex "bug"</a>.
