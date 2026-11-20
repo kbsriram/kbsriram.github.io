@@ -1,0 +1,18 @@
+$date
+2026-11-19
+
+$title
+A 3D printed CW bug
+
+<a href="https://github.com/kbsriram/3d-printed-cw-bug">
+   <img
+   src="/media/img/cw_bug_mechanism.png"
+   class="lead_initial"
+   alt="3D printed CW bug mechanism"/>
+</a>
+A 3D printable semi-automatic Morse key (a "bug") for ham radio
+operators. It has no springs or bearings: printed flexures act as both
+the pivot and the spring. A magnet on the pendulum closes a single
+reed switch for both dits and dahs.
+<a href="https://github.com/kbsriram/3d-printed-cw-bug">Source and STL files</a>,
+and a <a href="https://www.youtube.com/watch?v=0ebGyvmV2f0">video of it working</a>.
